@@ -22,18 +22,50 @@ namespace TheUniversitySite {
 		AdminProgrammes(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
+				con->Open();
+				Programmes->Items->Clear();
+
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+					String^ Programmeslist = Dr2->GetString("programName");
+					String^ ID = Dr2->GetInt32("idProgramme").ToString();
+					Programmes->Items->Add(ID + "    " + Programmeslist);
+				}
+				con->Close();
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
 		}
 		Form^ adhomebck;
 		AdminProgrammes(Form^adhomebck1)
 		{
 			adhomebck = adhomebck1;
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
+				con->Open();
+				Programmes->Items->Clear();
+
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+					String^ Programmeslist = Dr2->GetString("programName");
+					String^ ID = Dr2->GetInt32("idProgramme").ToString();
+					Programmes->Items->Add(ID + "    " + Programmeslist);
+				}
+				con->Close();
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
 		}
 	protected:
 		/// <summary>
@@ -64,7 +96,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Button^ backbutton;
 
 	private: System::Windows::Forms::ListBox^ Programmes;
-	private: System::Windows::Forms::Button^ refresh;
+
 
 	private:
 
@@ -104,7 +136,6 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(AdminProgrammes::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->refresh = (gcnew System::Windows::Forms::Button());
 			this->Programmes = (gcnew System::Windows::Forms::ListBox());
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->removeprogrammes = (gcnew System::Windows::Forms::Button());
@@ -121,7 +152,6 @@ namespace TheUniversitySite {
 			// 
 			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
-			this->panel2->Controls->Add(this->refresh);
 			this->panel2->Controls->Add(this->Programmes);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->removeprogrammes);
@@ -134,16 +164,6 @@ namespace TheUniversitySite {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(629, 610);
 			this->panel2->TabIndex = 2;
-			// 
-			// refresh
-			// 
-			this->refresh->Location = System::Drawing::Point(159, 454);
-			this->refresh->Name = L"refresh";
-			this->refresh->Size = System::Drawing::Size(79, 34);
-			this->refresh->TabIndex = 39;
-			this->refresh->Text = L"REFRESH";
-			this->refresh->UseVisualStyleBackColor = true;
-			this->refresh->Click += gcnew System::EventHandler(this, &AdminProgrammes::refresh_Click);
 			// 
 			// Programmes
 			// 
@@ -307,31 +327,6 @@ private: System::Void removeprogrammes_Click(System::Object^ sender, System::Eve
 			String^ ID = Dr2->GetInt32("idProgramme").ToString();
 			Programmes->Items->Add(ID + "    " + Programmeslist);
 			
-		}
-		con->Close();
-	}
-	catch (Exception^ Ex)
-	{
-		MessageBox::Show(Ex->Message);
-	}
-
-}
-
-
-private: System::Void refresh_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	try {
-		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
-		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);		
-		con->Open();
-		Programmes->Items->Clear();
-
-		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
-		while (Dr2->Read()) {
-			String^ Programmeslist = Dr2->GetString("programName");
-			String^ ID = Dr2->GetInt32("idProgramme").ToString();
-			Programmes->Items->Add(ID + "    " + Programmeslist);
 		}
 		con->Close();
 	}
