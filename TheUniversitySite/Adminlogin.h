@@ -1,4 +1,5 @@
 #pragma once
+#include "Admin.h"
 
 namespace TheUniversitySite {
 
@@ -22,7 +23,15 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ mainbck;
+		Adminlogin(Form^mainbck1)
+		{
+			mainbck = mainbck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -41,6 +50,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::TextBox^ password;
 	private: System::Windows::Forms::TextBox^ admin;
+	private: System::Windows::Forms::Button^ backmain;
 
 
 	protected:
@@ -71,12 +81,14 @@ namespace TheUniversitySite {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->password = (gcnew System::Windows::Forms::TextBox());
 			this->admin = (gcnew System::Windows::Forms::TextBox());
+			this->backmain = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel1
 			// 
 			this->panel1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel1.BackgroundImage")));
+			this->panel1->Controls->Add(this->backmain);
 			this->panel1->Controls->Add(this->login);
 			this->panel1->Controls->Add(this->label2);
 			this->panel1->Controls->Add(this->label1);
@@ -95,6 +107,7 @@ namespace TheUniversitySite {
 			this->login->TabIndex = 4;
 			this->login->Text = L"Login";
 			this->login->UseVisualStyleBackColor = true;
+			this->login->Click += gcnew System::EventHandler(this, &Adminlogin::login_Click);
 			// 
 			// label2
 			// 
@@ -129,6 +142,16 @@ namespace TheUniversitySite {
 			this->admin->Size = System::Drawing::Size(184, 20);
 			this->admin->TabIndex = 0;
 			// 
+			// backmain
+			// 
+			this->backmain->Location = System::Drawing::Point(542, 537);
+			this->backmain->Name = L"backmain";
+			this->backmain->Size = System::Drawing::Size(46, 43);
+			this->backmain->TabIndex = 22;
+			this->backmain->Text = L"Back";
+			this->backmain->UseVisualStyleBackColor = true;
+			this->backmain->Click += gcnew System::EventHandler(this, &Adminlogin::backmain_Click);
+			// 
 			// Adminlogin
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -144,5 +167,15 @@ namespace TheUniversitySite {
 
 		}
 #pragma endregion
-	};
+	private: System::Void login_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		this->Hide();
+		Admin^ adhomepg = gcnew Admin(this);
+		adhomepg->Show();
+	}
+private: System::Void backmain_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	mainbck->Show();
+}
+};
 }

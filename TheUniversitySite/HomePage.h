@@ -1,6 +1,7 @@
 #pragma once
-#include "AdminProgrammes.h"
-#include "Adminstudents.h"
+#include "Adminlogin.h"
+#include "StudentPortal.h"
+
 namespace TheUniversitySite {
 
 	using namespace System;
@@ -172,15 +173,15 @@ namespace TheUniversitySite {
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	this->Hide();
-	Adminstudents^ adminstudnxt = gcnew Adminstudents();
-	adminstudnxt->Show();
+	StudentPortal^ stdprtal = gcnew StudentPortal(this);
+	stdprtal->Show();
 
 
 }
 private: System::Void admin_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Hide();
-	AdminProgrammes^ programnext = gcnew AdminProgrammes();
-	programnext->Show();
+	Adminlogin^ adloginnext = gcnew Adminlogin(this);
+	adloginnext->Show();
 }
 };
 }

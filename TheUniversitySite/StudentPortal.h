@@ -22,7 +22,12 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ bck;
+		StudentPortal(Form^bck1)
+		{
+			bck = bck1;
+			InitializeComponent();
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -170,6 +175,7 @@ namespace TheUniversitySite {
 			this->backbutton->TabIndex = 26;
 			this->backbutton->Text = L"BACK";
 			this->backbutton->UseVisualStyleBackColor = true;
+			this->backbutton->Click += gcnew System::EventHandler(this, &StudentPortal::backbutton_Click);
 			// 
 			// label6
 			// 
@@ -424,5 +430,11 @@ namespace TheUniversitySite {
 #pragma endregion
 	private: System::Void StudentPortal_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+	
+private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	this->Hide();
+	bck->Show();
+}
+};
 }

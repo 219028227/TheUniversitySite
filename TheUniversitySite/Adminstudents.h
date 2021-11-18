@@ -23,7 +23,15 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ adhomebck;
+		Adminstudents(Form^adhomebck1)
+		{
+			adhomebck = adhomebck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -73,6 +81,7 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Adminstudents::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->programme = (gcnew System::Windows::Forms::ComboBox());
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->removestudents = (gcnew System::Windows::Forms::Button());
 			this->addstudents = (gcnew System::Windows::Forms::Button());
@@ -85,7 +94,6 @@ namespace TheUniversitySite {
 			this->studentsview = (gcnew System::Windows::Forms::ListBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->programme = (gcnew System::Windows::Forms::ComboBox());
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -111,6 +119,14 @@ namespace TheUniversitySite {
 			this->panel2->Size = System::Drawing::Size(629, 610);
 			this->panel2->TabIndex = 2;
 			// 
+			// programme
+			// 
+			this->programme->FormattingEnabled = true;
+			this->programme->Location = System::Drawing::Point(405, 254);
+			this->programme->Name = L"programme";
+			this->programme->Size = System::Drawing::Size(194, 21);
+			this->programme->TabIndex = 31;
+			// 
 			// backbutton
 			// 
 			this->backbutton->Location = System::Drawing::Point(557, 545);
@@ -119,6 +135,7 @@ namespace TheUniversitySite {
 			this->backbutton->TabIndex = 30;
 			this->backbutton->Text = L"BACK";
 			this->backbutton->UseVisualStyleBackColor = true;
+			this->backbutton->Click += gcnew System::EventHandler(this, &Adminstudents::backbutton_Click);
 			// 
 			// removestudents
 			// 
@@ -222,14 +239,6 @@ namespace TheUniversitySite {
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
-			// programme
-			// 
-			this->programme->FormattingEnabled = true;
-			this->programme->Location = System::Drawing::Point(405, 254);
-			this->programme->Name = L"programme";
-			this->programme->Size = System::Drawing::Size(194, 21);
-			this->programme->TabIndex = 31;
-			// 
 			// Adminstudents
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -275,5 +284,9 @@ namespace TheUniversitySite {
 		}
 
 	}
+private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	adhomebck->Show();
+}
 };
 }

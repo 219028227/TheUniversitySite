@@ -1,4 +1,5 @@
 #pragma once
+#include "Adminstudents.h"
 
 namespace TheUniversitySite {
 
@@ -17,6 +18,15 @@ namespace TheUniversitySite {
 	public:
 		Admin(void)
 		{
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
+		Form^ adlogbck;
+		Admin(Form^adlogbck1)
+		{
+			adlogbck = adlogbck1;
 			InitializeComponent();
 			//
 			//TODO: Add the constructor code here
@@ -129,12 +139,13 @@ namespace TheUniversitySite {
 			// 
 			// backadmin
 			// 
-			this->backadmin->Location = System::Drawing::Point(580, 3);
+			this->backadmin->Location = System::Drawing::Point(580, 564);
 			this->backadmin->Name = L"backadmin";
 			this->backadmin->Size = System::Drawing::Size(46, 43);
 			this->backadmin->TabIndex = 21;
 			this->backadmin->Text = L"Back";
 			this->backadmin->UseVisualStyleBackColor = true;
+			this->backadmin->Click += gcnew System::EventHandler(this, &Admin::backadmin_Click);
 			// 
 			// label4
 			// 
@@ -275,6 +286,7 @@ namespace TheUniversitySite {
 			this->viewstudents->TabIndex = 6;
 			this->viewstudents->Text = L"VIEW";
 			this->viewstudents->UseVisualStyleBackColor = true;
+			this->viewstudents->Click += gcnew System::EventHandler(this, &Admin::viewstudents_Click);
 			// 
 			// pictureBox1
 			// 
@@ -322,6 +334,15 @@ namespace TheUniversitySite {
 private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void pictureBox4_Click(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void backadmin_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	adlogbck->Show();
+}
+private: System::Void viewstudents_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	Adminstudents^ adstudnxt = gcnew Adminstudents(this);
+	adstudnxt->Show();
 }
 };
 }
