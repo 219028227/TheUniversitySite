@@ -16,21 +16,58 @@ namespace TheUniversitySite {
 	public ref class Adminstudents : public System::Windows::Forms::Form
 	{
 	public:
+		 int ProgrammeChosen;
 		Adminstudents(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
+				con->Open();
+
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+					String^ Programmeslist = Dr2->GetString("programName");
+					programme->Items->Add(Programmeslist);
+				}
+				con->Close();
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
 		}
-		Form^ adhomebck;
+	private: System::Windows::Forms::TextBox^ emailstud;
+	private: System::Windows::Forms::Label^ namelbl;
+	private: System::Windows::Forms::TextBox^ studnamebx;
+	private: System::Windows::Forms::Label^ Emaillbl;
+	public:
+
+	public:
+
+		   Form^ adhomebck;
 		Adminstudents(Form^adhomebck1)
 		{
 			adhomebck = adhomebck1;
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
+				con->Open();
+
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+					String^ Programmeslist = Dr2->GetString("programName");
+					programme->Items->Add(Programmeslist);
+				}
+				con->Close();
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
 		}
 	protected:
 		/// <summary>
@@ -81,6 +118,10 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Adminstudents::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->namelbl = (gcnew System::Windows::Forms::Label());
+			this->studnamebx = (gcnew System::Windows::Forms::TextBox());
+			this->Emaillbl = (gcnew System::Windows::Forms::Label());
+			this->emailstud = (gcnew System::Windows::Forms::TextBox());
 			this->programme = (gcnew System::Windows::Forms::ComboBox());
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->removestudents = (gcnew System::Windows::Forms::Button());
@@ -101,6 +142,10 @@ namespace TheUniversitySite {
 			// panel2
 			// 
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->namelbl);
+			this->panel2->Controls->Add(this->studnamebx);
+			this->panel2->Controls->Add(this->Emaillbl);
+			this->panel2->Controls->Add(this->emailstud);
 			this->panel2->Controls->Add(this->programme);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->removestudents);
@@ -119,13 +164,48 @@ namespace TheUniversitySite {
 			this->panel2->Size = System::Drawing::Size(629, 610);
 			this->panel2->TabIndex = 2;
 			// 
+			// namelbl
+			// 
+			this->namelbl->AutoSize = true;
+			this->namelbl->Location = System::Drawing::Point(401, 156);
+			this->namelbl->Name = L"namelbl";
+			this->namelbl->Size = System::Drawing::Size(35, 13);
+			this->namelbl->TabIndex = 35;
+			this->namelbl->Text = L"Name";
+			// 
+			// studnamebx
+			// 
+			this->studnamebx->Location = System::Drawing::Point(404, 172);
+			this->studnamebx->Name = L"studnamebx";
+			this->studnamebx->Size = System::Drawing::Size(194, 20);
+			this->studnamebx->TabIndex = 34;
+			// 
+			// Emaillbl
+			// 
+			this->Emaillbl->AutoSize = true;
+			this->Emaillbl->Location = System::Drawing::Point(403, 197);
+			this->Emaillbl->Name = L"Emaillbl";
+			this->Emaillbl->Size = System::Drawing::Size(32, 13);
+			this->Emaillbl->TabIndex = 33;
+			this->Emaillbl->Text = L"Email";
+			// 
+			// emailstud
+			// 
+			this->emailstud->Location = System::Drawing::Point(404, 213);
+			this->emailstud->Name = L"emailstud";
+			this->emailstud->Size = System::Drawing::Size(195, 20);
+			this->emailstud->TabIndex = 32;
+			// 
 			// programme
 			// 
 			this->programme->FormattingEnabled = true;
-			this->programme->Location = System::Drawing::Point(405, 254);
+			this->programme->Location = System::Drawing::Point(406, 360);
 			this->programme->Name = L"programme";
 			this->programme->Size = System::Drawing::Size(194, 21);
 			this->programme->TabIndex = 31;
+			this->programme->Text = L"Select Programme";
+			this->programme->TextChanged += gcnew System::EventHandler(this, &Adminstudents::programme_TextChanged);
+			
 			// 
 			// backbutton
 			// 
@@ -148,7 +228,7 @@ namespace TheUniversitySite {
 			// 
 			// addstudents
 			// 
-			this->addstudents->Location = System::Drawing::Point(521, 314);
+			this->addstudents->Location = System::Drawing::Point(520, 387);
 			this->addstudents->Name = L"addstudents";
 			this->addstudents->Size = System::Drawing::Size(79, 34);
 			this->addstudents->TabIndex = 28;
@@ -159,7 +239,7 @@ namespace TheUniversitySite {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(402, 238);
+			this->label5->Location = System::Drawing::Point(403, 344);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(60, 13);
 			this->label5->TabIndex = 27;
@@ -168,7 +248,7 @@ namespace TheUniversitySite {
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(402, 190);
+			this->label4->Location = System::Drawing::Point(401, 295);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(53, 13);
 			this->label4->TabIndex = 26;
@@ -177,7 +257,7 @@ namespace TheUniversitySite {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(402, 144);
+			this->label3->Location = System::Drawing::Point(401, 245);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(84, 13);
 			this->label3->TabIndex = 25;
@@ -185,14 +265,14 @@ namespace TheUniversitySite {
 			// 
 			// password
 			// 
-			this->password->Location = System::Drawing::Point(405, 206);
+			this->password->Location = System::Drawing::Point(404, 311);
 			this->password->Name = L"password";
 			this->password->Size = System::Drawing::Size(195, 20);
 			this->password->TabIndex = 24;
 			// 
 			// studentnumber
 			// 
-			this->studentnumber->Location = System::Drawing::Point(405, 160);
+			this->studentnumber->Location = System::Drawing::Point(404, 261);
 			this->studentnumber->Name = L"studentnumber";
 			this->studentnumber->Size = System::Drawing::Size(195, 20);
 			this->studentnumber->TabIndex = 20;
@@ -260,20 +340,31 @@ namespace TheUniversitySite {
 	}
 	private: System::Void addstudents_Click(System::Object^ sender, System::EventArgs^ e) {
 
+		
 		try {
 			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
 
+			String^ ProgrammeSt = programme->Text;
+			MessageBox::Show("" + ProgrammeSt + "");
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select idProgramme from programme where programName='" + ProgrammeSt + "'", con);
+			con->Open();
+			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+			while (Dr3->Read()) {
+				ProgrammeChosen = Dr3->GetInt32("idProgramme");
+			}
+			con->Close();
+
 			String^ Password = password->Text;					
 			String^ Number = studentnumber->Text;	
 			String^ Role = "student";
-			int Programme = 1;
+			int Programme= ProgrammeChosen;
 			int Id;
-			String^ stdname = ""; /////////
-			String^ Email = "";
+			String^ stdname = studnamebx->Text; 
+			String^ Email = emailstud->Text;
 			
 
-			MySqlCommand^ cmd = gcnew MySqlCommand("Insert into user values(" + Id + ",'" + stdname + "', '" + Number + "', '" + Email + "', '" + Email + "', '" + Password + "')", con);
+			MySqlCommand^ cmd = gcnew MySqlCommand("Insert into user values(" + Id + ",'" + stdname + "', '" + Number + "', '" + Email + "', '" + Password + "', '" + Role + "',"+ Programme +")", con);
 			con->Open();
 			MySqlDataReader^ Dr = cmd->ExecuteReader();
 			con->Close();
@@ -288,5 +379,9 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 	this->Hide();
 	adhomebck->Show();
 }
+private: System::Void programme_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	
+}
+
 };
 }
