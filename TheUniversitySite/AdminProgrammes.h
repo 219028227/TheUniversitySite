@@ -1,5 +1,8 @@
 #pragma once
-
+#include<iostream>
+#include <string>
+#include <string>
+#include<math.h>
 namespace TheUniversitySite {
 
 	using namespace System;
@@ -51,8 +54,9 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::TextBox^ programmename;
 	private: System::Windows::Forms::Button^ removeprogrammes;
 	private: System::Windows::Forms::Button^ backbutton;
-	private: System::Windows::Forms::BindingSource^ bindingSource1;
+
 	private: System::Windows::Forms::ListBox^ Programmes;
+	private: System::Windows::Forms::Button^ refresh;
 
 	private:
 
@@ -90,10 +94,10 @@ namespace TheUniversitySite {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(AdminProgrammes::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
+			this->refresh = (gcnew System::Windows::Forms::Button());
+			this->Programmes = (gcnew System::Windows::Forms::ListBox());
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->removeprogrammes = (gcnew System::Windows::Forms::Button());
 			this->addprogrammes = (gcnew System::Windows::Forms::Button());
@@ -101,9 +105,7 @@ namespace TheUniversitySite {
 			this->programmename = (gcnew System::Windows::Forms::TextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
-			this->Programmes = (gcnew System::Windows::Forms::ListBox());
 			this->panel2->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -111,6 +113,7 @@ namespace TheUniversitySite {
 			// 
 			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->refresh);
 			this->panel2->Controls->Add(this->Programmes);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->removeprogrammes);
@@ -124,18 +127,40 @@ namespace TheUniversitySite {
 			this->panel2->Size = System::Drawing::Size(629, 610);
 			this->panel2->TabIndex = 2;
 			// 
+			// refresh
+			// 
+			this->refresh->Location = System::Drawing::Point(159, 454);
+			this->refresh->Name = L"refresh";
+			this->refresh->Size = System::Drawing::Size(79, 34);
+			this->refresh->TabIndex = 39;
+			this->refresh->Text = L"REFRESH";
+			this->refresh->UseVisualStyleBackColor = true;
+			this->refresh->Click += gcnew System::EventHandler(this, &AdminProgrammes::refresh_Click);
+			// 
+			// Programmes
+			// 
+			this->Programmes->Font = (gcnew System::Drawing::Font(L"Times New Roman", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Programmes->FormattingEnabled = true;
+			this->Programmes->ItemHeight = 15;
+			this->Programmes->Location = System::Drawing::Point(15, 129);
+			this->Programmes->Name = L"Programmes";
+			this->Programmes->Size = System::Drawing::Size(308, 319);
+			this->Programmes->TabIndex = 38;
+			// 
 			// backbutton
 			// 
 			this->backbutton->Location = System::Drawing::Point(556, 550);
 			this->backbutton->Name = L"backbutton";
 			this->backbutton->Size = System::Drawing::Size(59, 48);
 			this->backbutton->TabIndex = 37;
-			this->backbutton->Text = L"ADD";
+			this->backbutton->Text = L"BACK";
 			this->backbutton->UseVisualStyleBackColor = true;
+			this->backbutton->Click += gcnew System::EventHandler(this, &AdminProgrammes::backbutton_Click);
 			// 
 			// removeprogrammes
 			// 
-			this->removeprogrammes->Location = System::Drawing::Point(244, 472);
+			this->removeprogrammes->Location = System::Drawing::Point(244, 454);
 			this->removeprogrammes->Name = L"removeprogrammes";
 			this->removeprogrammes->Size = System::Drawing::Size(79, 34);
 			this->removeprogrammes->TabIndex = 36;
@@ -191,14 +216,6 @@ namespace TheUniversitySite {
 			this->pictureBox3->TabStop = false;
 			this->pictureBox3->Click += gcnew System::EventHandler(this, &AdminProgrammes::pictureBox3_Click);
 			// 
-			// Programmes
-			// 
-			this->Programmes->FormattingEnabled = true;
-			this->Programmes->Location = System::Drawing::Point(15, 129);
-			this->Programmes->Name = L"Programmes";
-			this->Programmes->Size = System::Drawing::Size(308, 329);
-			this->Programmes->TabIndex = 38;
-			// 
 			// AdminProgrammes
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -211,13 +228,13 @@ namespace TheUniversitySite {
 			this->Load += gcnew System::EventHandler(this, &AdminProgrammes::AdminProgrammes_Load);
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
 	private: System::Void AdminProgrammes_Load(System::Object^ sender, System::EventArgs^ e) {
+
 	}
 	private: System::Void pictureBox3_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -231,7 +248,7 @@ private: System::Void addprogrammes_Click(System::Object^ sender, System::EventA
 		int Id;
 		String^ Programme = programmename->Text;
 		MySqlCommand^ cmd = gcnew MySqlCommand("Insert into programme values(" + Id + ",'" + Programme + "')", con);
-		MySqlCommand^ cmd2 = gcnew MySqlCommand("select programName from programme", con);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
 		con->Open();
 		MySqlDataReader^ Dr = cmd->ExecuteReader();	
 		con->Close();
@@ -241,7 +258,8 @@ private: System::Void addprogrammes_Click(System::Object^ sender, System::EventA
 		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
 		while (Dr2->Read()) {
 			String^ Programmeslist = Dr2->GetString("programName");
-			Programmes->Items->Add(Programmeslist);
+			String^ ID = Dr2->GetInt32("idProgramme").ToString();
+			Programmes->Items->Add(ID+ "    " +Programmeslist);
 
 		}
 		con->Close();
@@ -257,22 +275,32 @@ private: System::Void addprogrammes_Click(System::Object^ sender, System::EventA
 
 private: System::Void removeprogrammes_Click(System::Object^ sender, System::EventArgs^ e) {
 	try {
-		/*String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-		MySqlCommand^ cmd2 = gcnew MySqlCommand("select programName from programme", con);
+
+		String^ deltrow = Programmes->SelectedItem->ToString();
+		String^ deltrow2 = deltrow->Substring(0, 2);
+		int Deltrow = Int32::Parse(deltrow2);
+
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from programme where idProgramme = " + Deltrow + " ", con);
+		MySqlCommand^ cmd = gcnew MySqlCommand("select * from programme", con);
 		
-		Programmes->Items->Clear();
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+		
 		con->Open();
-		MySqlDataReader^ Dr = cmd2->ExecuteReader();
-		while (Dr->Read()) {
-			String^ Programmeslist= Dr->GetString("programName");
-			Programmes->Items->Add(Programmeslist);
+		Programmes->Items->Clear();
+		MySqlDataReader^ Dr2 = cmd->ExecuteReader();
+		while (Dr2->Read()) {
+
+			String^ Programmeslist = Dr2->GetString("programName");
+			String^ ID = Dr2->GetInt32("idProgramme").ToString();
+			Programmes->Items->Add(ID + "    " + Programmeslist);
 			
 		}
-		con->Close();*/
-		
-		
-		
+		con->Close();
 	}
 	catch (Exception^ Ex)
 	{
@@ -282,5 +310,31 @@ private: System::Void removeprogrammes_Click(System::Object^ sender, System::Eve
 }
 
 
+private: System::Void refresh_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);		
+		con->Open();
+		Programmes->Items->Clear();
+
+		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+		while (Dr2->Read()) {
+			String^ Programmeslist = Dr2->GetString("programName");
+			String^ ID = Dr2->GetInt32("idProgramme").ToString();
+			Programmes->Items->Add(ID + "    " + Programmeslist);
+		}
+		con->Close();
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
+
+}
+private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+
+}
 };
 }
