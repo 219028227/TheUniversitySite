@@ -32,11 +32,23 @@ namespace TheUniversitySite {
 					programme->Items->Add(Programmeslist);
 				}
 				con->Close();
+				MySqlCommand^ cmd4 = gcnew MySqlCommand("select * from user where role='student'", con);
+				con->Open();
+				studentsview->Items->Clear();
+
+				MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+				while (Dr4->Read()) {
+					String^ Names = Dr4->GetString("name");
+					String^ ID = Dr4->GetString("number");
+					studentsview->Items->Add(ID + "    " + Names);
+				}
+				con->Close();
 			}
 			catch (Exception^ Ex)
 			{
 				MessageBox::Show(Ex->Message);
 			}
+			
 		}
 	private: System::Windows::Forms::TextBox^ emailstud;
 	private: System::Windows::Forms::Label^ namelbl;
@@ -61,6 +73,17 @@ namespace TheUniversitySite {
 				while (Dr2->Read()) {
 					String^ Programmeslist = Dr2->GetString("programName");
 					programme->Items->Add(Programmeslist);
+				}
+				con->Close();
+				MySqlCommand^ cmd4 = gcnew MySqlCommand("select * from user where role='student'", con);
+				con->Open();
+				studentsview->Items->Clear();
+
+				MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+				while (Dr4->Read()) {
+					String^ Names = Dr4->GetString("name");
+					String^ ID = Dr4->GetString("number");
+					studentsview->Items->Add(ID + "    " + Names);
 				}
 				con->Close();
 			}
@@ -205,7 +228,6 @@ namespace TheUniversitySite {
 			this->programme->TabIndex = 31;
 			this->programme->Text = L"Select Programme";
 			this->programme->TextChanged += gcnew System::EventHandler(this, &Adminstudents::programme_TextChanged);
-			
 			// 
 			// backbutton
 			// 
@@ -219,12 +241,13 @@ namespace TheUniversitySite {
 			// 
 			// removestudents
 			// 
-			this->removestudents->Location = System::Drawing::Point(257, 469);
+			this->removestudents->Location = System::Drawing::Point(257, 480);
 			this->removestudents->Name = L"removestudents";
 			this->removestudents->Size = System::Drawing::Size(79, 34);
 			this->removestudents->TabIndex = 29;
 			this->removestudents->Text = L"REMOVE";
 			this->removestudents->UseVisualStyleBackColor = true;
+			this->removestudents->Click += gcnew System::EventHandler(this, &Adminstudents::removestudents_Click);
 			// 
 			// addstudents
 			// 
@@ -283,7 +306,7 @@ namespace TheUniversitySite {
 			this->label2->BackColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Myanmar Text", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(11, 111);
+			this->label2->Location = System::Drawing::Point(11, 100);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(89, 29);
 			this->label2->TabIndex = 19;
@@ -292,7 +315,7 @@ namespace TheUniversitySite {
 			// studentsview
 			// 
 			this->studentsview->FormattingEnabled = true;
-			this->studentsview->Location = System::Drawing::Point(31, 121);
+			this->studentsview->Location = System::Drawing::Point(31, 132);
 			this->studentsview->Name = L"studentsview";
 			this->studentsview->Size = System::Drawing::Size(305, 342);
 			this->studentsview->TabIndex = 18;
@@ -345,14 +368,12 @@ namespace TheUniversitySite {
 			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
 
-			String^ ProgrammeSt = programme->Text;
-			MessageBox::Show("" + ProgrammeSt + "");
+			String^ ProgrammeSt = programme->Text;			
 			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select idProgramme from programme where programName='" + ProgrammeSt + "'", con);
 			con->Open();
 			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
 			while (Dr3->Read()) {
-				ProgrammeChosen = Dr3->GetInt32("idProgramme");
-			}
+				ProgrammeChosen = Dr3->GetInt32("idProgramme");			}
 			con->Close();
 
 			String^ Password = password->Text;					
@@ -368,6 +389,19 @@ namespace TheUniversitySite {
 			con->Open();
 			MySqlDataReader^ Dr = cmd->ExecuteReader();
 			con->Close();
+
+			MySqlCommand^ cmd4 = gcnew MySqlCommand("select * from user where role='student'", con);
+			con->Open();
+			studentsview->Items->Clear();
+
+			MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+			while (Dr4->Read()) {
+				String^ Names = Dr4->GetString("name");
+				String^ ID = Dr4->GetString("number");
+				studentsview->Items->Add(ID + "    " + Names);
+			}
+			con->Close();
+
 		}
 		catch (Exception^ Ex)
 		{
@@ -383,5 +417,40 @@ private: System::Void programme_TextChanged(System::Object^ sender, System::Even
 	
 }
 
+private: System::Void removestudents_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+		String^ deltrow = studentsview->SelectedItem->ToString();
+		String^ deltrow2 = deltrow->Substring(0, 9);
+		int Deltrow = Int32::Parse(deltrow2);
+
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from user where number ="+Deltrow+" ", con);
+		
+
+		con->Open();
+		MySqlDataReader^ Dr = cmd2->ExecuteReader();
+		con->Close();
+		MySqlCommand^ cmd4 = gcnew MySqlCommand("select * from user where role='student'", con);
+		con->Open();
+		studentsview->Items->Clear();
+
+		MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+		while (Dr4->Read()) {
+			String^ Names = Dr4->GetString("name");
+			String^ ID = Dr4->GetString("number");
+			studentsview->Items->Add(ID + "    " + Names);
+		}
+		con->Close();
+
+		
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
+}
 };
 }
