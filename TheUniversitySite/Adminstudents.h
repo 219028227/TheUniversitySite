@@ -227,7 +227,7 @@ namespace TheUniversitySite {
 			this->programme->Size = System::Drawing::Size(194, 21);
 			this->programme->TabIndex = 31;
 			this->programme->Text = L"Select Programme";
-			this->programme->TextChanged += gcnew System::EventHandler(this, &Adminstudents::programme_TextChanged);
+			
 			// 
 			// backbutton
 			// 
@@ -369,7 +369,7 @@ namespace TheUniversitySite {
 			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
 
 			String^ ProgrammeSt = programme->Text;			
-			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select idProgramme from programme where programName='" + ProgrammeSt + "'", con);
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select idProgramme from programme where programName='"+ProgrammeSt+"'", con);
 			con->Open();
 			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
 			while (Dr3->Read()) {
@@ -413,9 +413,7 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 	this->Hide();
 	adhomebck->Show();
 }
-private: System::Void programme_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-	
-}
+
 
 private: System::Void removestudents_Click(System::Object^ sender, System::EventArgs^ e) {
 
