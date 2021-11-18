@@ -1,5 +1,6 @@
 #pragma once
-
+#include "AdminProgrammes.h"
+#include "Adminstudents.h"
 namespace TheUniversitySite {
 
 	using namespace System;
@@ -97,6 +98,7 @@ namespace TheUniversitySite {
 			this->admin->TabIndex = 6;
 			this->admin->Text = L"Admin";
 			this->admin->UseVisualStyleBackColor = true;
+			this->admin->Click += gcnew System::EventHandler(this, &HomePage::admin_Click);
 			// 
 			// login
 			// 
@@ -168,6 +170,17 @@ namespace TheUniversitySite {
 	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	this->Hide();
+	Adminstudents^ adminstudnxt = gcnew Adminstudents();
+	adminstudnxt->Show();
+
+
+}
+private: System::Void admin_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	AdminProgrammes^ programnext = gcnew AdminProgrammes();
+	programnext->Show();
 }
 };
 }

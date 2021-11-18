@@ -8,6 +8,7 @@ namespace TheUniversitySite {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
 
 	/// <summary>
 	/// Summary for AdminProgrammes
@@ -42,7 +43,7 @@ namespace TheUniversitySite {
 
 	private: System::Windows::Forms::PictureBox^ pictureBox3;
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::ListBox^ programmesview;
+
 	private: System::Windows::Forms::Button^ addprogrammes;
 
 
@@ -50,6 +51,18 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::TextBox^ programmename;
 	private: System::Windows::Forms::Button^ removeprogrammes;
 	private: System::Windows::Forms::Button^ backbutton;
+	private: System::Windows::Forms::BindingSource^ bindingSource1;
+	private: System::Windows::Forms::ListBox^ Programmes;
+
+	private:
+
+
+
+
+	private:
+
+
+	private: System::ComponentModel::IContainer^ components;
 
 
 
@@ -68,7 +81,7 @@ namespace TheUniversitySite {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -77,17 +90,20 @@ namespace TheUniversitySite {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(AdminProgrammes::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->bindingSource1 = (gcnew System::Windows::Forms::BindingSource(this->components));
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->removeprogrammes = (gcnew System::Windows::Forms::Button());
 			this->addprogrammes = (gcnew System::Windows::Forms::Button());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->programmename = (gcnew System::Windows::Forms::TextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->programmesview = (gcnew System::Windows::Forms::ListBox());
 			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->Programmes = (gcnew System::Windows::Forms::ListBox());
 			this->panel2->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -95,13 +111,13 @@ namespace TheUniversitySite {
 			// 
 			this->panel2->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->Programmes);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->removeprogrammes);
 			this->panel2->Controls->Add(this->addprogrammes);
 			this->panel2->Controls->Add(this->label3);
 			this->panel2->Controls->Add(this->programmename);
 			this->panel2->Controls->Add(this->label1);
-			this->panel2->Controls->Add(this->programmesview);
 			this->panel2->Controls->Add(this->pictureBox3);
 			this->panel2->Location = System::Drawing::Point(2, 0);
 			this->panel2->Name = L"panel2";
@@ -119,12 +135,13 @@ namespace TheUniversitySite {
 			// 
 			// removeprogrammes
 			// 
-			this->removeprogrammes->Location = System::Drawing::Point(244, 456);
+			this->removeprogrammes->Location = System::Drawing::Point(244, 472);
 			this->removeprogrammes->Name = L"removeprogrammes";
 			this->removeprogrammes->Size = System::Drawing::Size(79, 34);
 			this->removeprogrammes->TabIndex = 36;
 			this->removeprogrammes->Text = L"REMOVE";
 			this->removeprogrammes->UseVisualStyleBackColor = true;
+			this->removeprogrammes->Click += gcnew System::EventHandler(this, &AdminProgrammes::removeprogrammes_Click);
 			// 
 			// addprogrammes
 			// 
@@ -134,6 +151,7 @@ namespace TheUniversitySite {
 			this->addprogrammes->TabIndex = 35;
 			this->addprogrammes->Text = L"ADD";
 			this->addprogrammes->UseVisualStyleBackColor = true;
+			this->addprogrammes->Click += gcnew System::EventHandler(this, &AdminProgrammes::addprogrammes_Click);
 			// 
 			// label3
 			// 
@@ -157,19 +175,11 @@ namespace TheUniversitySite {
 			this->label1->BackColor = System::Drawing::SystemColors::ControlLight;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Myanmar Text", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(10, 99);
+			this->label1->Location = System::Drawing::Point(10, 97);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(120, 29);
 			this->label1->TabIndex = 21;
 			this->label1->Text = L"PROGRAMMES";
-			// 
-			// programmesview
-			// 
-			this->programmesview->FormattingEnabled = true;
-			this->programmesview->Location = System::Drawing::Point(23, 108);
-			this->programmesview->Name = L"programmesview";
-			this->programmesview->Size = System::Drawing::Size(300, 342);
-			this->programmesview->TabIndex = 20;
 			// 
 			// pictureBox3
 			// 
@@ -180,6 +190,14 @@ namespace TheUniversitySite {
 			this->pictureBox3->TabIndex = 16;
 			this->pictureBox3->TabStop = false;
 			this->pictureBox3->Click += gcnew System::EventHandler(this, &AdminProgrammes::pictureBox3_Click);
+			// 
+			// Programmes
+			// 
+			this->Programmes->FormattingEnabled = true;
+			this->Programmes->Location = System::Drawing::Point(15, 129);
+			this->Programmes->Name = L"Programmes";
+			this->Programmes->Size = System::Drawing::Size(308, 329);
+			this->Programmes->TabIndex = 38;
 			// 
 			// AdminProgrammes
 			// 
@@ -193,6 +211,7 @@ namespace TheUniversitySite {
 			this->Load += gcnew System::EventHandler(this, &AdminProgrammes::AdminProgrammes_Load);
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->bindingSource1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
 			this->ResumeLayout(false);
 
@@ -202,5 +221,66 @@ namespace TheUniversitySite {
 	}
 	private: System::Void pictureBox3_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void addprogrammes_Click(System::Object^ sender, System::EventArgs^ e) {
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+		
+
+		int Id;
+		String^ Programme = programmename->Text;
+		MySqlCommand^ cmd = gcnew MySqlCommand("Insert into programme values(" + Id + ",'" + Programme + "')", con);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select programName from programme", con);
+		con->Open();
+		MySqlDataReader^ Dr = cmd->ExecuteReader();	
+		con->Close();
+		con->Open();
+		Programmes->Items->Clear();
+		
+		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+		while (Dr2->Read()) {
+			String^ Programmeslist = Dr2->GetString("programName");
+			Programmes->Items->Add(Programmeslist);
+
+		}
+		con->Close();
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
+	
+
+
+}
+
+private: System::Void removeprogrammes_Click(System::Object^ sender, System::EventArgs^ e) {
+	try {
+		/*String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select programName from programme", con);
+		
+		Programmes->Items->Clear();
+		con->Open();
+		MySqlDataReader^ Dr = cmd2->ExecuteReader();
+		while (Dr->Read()) {
+			String^ Programmeslist= Dr->GetString("programName");
+			Programmes->Items->Add(Programmeslist);
+			
+		}
+		con->Close();*/
+		
+		
+		
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
+
+}
+
+
 };
 }

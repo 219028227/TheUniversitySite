@@ -8,6 +8,7 @@ namespace TheUniversitySite {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
 
 	/// <summary>
 	/// Summary for Adminstudents
@@ -42,7 +43,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Label^ label4;
 	private: System::Windows::Forms::Label^ label3;
 	private: System::Windows::Forms::TextBox^ password;
-	private: System::Windows::Forms::TextBox^ programme;
+
 
 
 	private: System::Windows::Forms::TextBox^ studentnumber;
@@ -54,6 +55,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Button^ removestudents;
 	private: System::Windows::Forms::Button^ backbutton;
+	private: System::Windows::Forms::ComboBox^ programme;
 
 
 	private:
@@ -78,12 +80,12 @@ namespace TheUniversitySite {
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->password = (gcnew System::Windows::Forms::TextBox());
-			this->programme = (gcnew System::Windows::Forms::TextBox());
 			this->studentnumber = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->studentsview = (gcnew System::Windows::Forms::ListBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->programme = (gcnew System::Windows::Forms::ComboBox());
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -91,6 +93,7 @@ namespace TheUniversitySite {
 			// panel2
 			// 
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->programme);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->removestudents);
 			this->panel2->Controls->Add(this->addstudents);
@@ -98,7 +101,6 @@ namespace TheUniversitySite {
 			this->panel2->Controls->Add(this->label4);
 			this->panel2->Controls->Add(this->label3);
 			this->panel2->Controls->Add(this->password);
-			this->panel2->Controls->Add(this->programme);
 			this->panel2->Controls->Add(this->studentnumber);
 			this->panel2->Controls->Add(this->label2);
 			this->panel2->Controls->Add(this->studentsview);
@@ -129,12 +131,13 @@ namespace TheUniversitySite {
 			// 
 			// addstudents
 			// 
-			this->addstudents->Location = System::Drawing::Point(520, 307);
+			this->addstudents->Location = System::Drawing::Point(521, 314);
 			this->addstudents->Name = L"addstudents";
 			this->addstudents->Size = System::Drawing::Size(79, 34);
 			this->addstudents->TabIndex = 28;
 			this->addstudents->Text = L"ADD";
 			this->addstudents->UseVisualStyleBackColor = true;
+			this->addstudents->Click += gcnew System::EventHandler(this, &Adminstudents::addstudents_Click);
 			// 
 			// label5
 			// 
@@ -169,13 +172,6 @@ namespace TheUniversitySite {
 			this->password->Name = L"password";
 			this->password->Size = System::Drawing::Size(195, 20);
 			this->password->TabIndex = 24;
-			// 
-			// programme
-			// 
-			this->programme->Location = System::Drawing::Point(405, 254);
-			this->programme->Name = L"programme";
-			this->programme->Size = System::Drawing::Size(195, 20);
-			this->programme->TabIndex = 23;
 			// 
 			// studentnumber
 			// 
@@ -226,6 +222,14 @@ namespace TheUniversitySite {
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
+			// programme
+			// 
+			this->programme->FormattingEnabled = true;
+			this->programme->Location = System::Drawing::Point(405, 254);
+			this->programme->Name = L"programme";
+			this->programme->Size = System::Drawing::Size(194, 21);
+			this->programme->TabIndex = 31;
+			// 
 			// Adminstudents
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -245,5 +249,31 @@ namespace TheUniversitySite {
 #pragma endregion
 	private: System::Void Adminstudents_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
-	};
+	private: System::Void addstudents_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ Password = password->Text;					
+			String^ Number = studentnumber->Text;	
+			String^ Role = "student";
+			int Programme = 1;
+			int Id;
+			String^ stdname = ""; /////////
+			String^ Email = "";
+			
+
+			MySqlCommand^ cmd = gcnew MySqlCommand("Insert into user values(" + Id + ",'" + stdname + "', '" + Number + "', '" + Email + "', '" + Email + "', '" + Password + "')", con);
+			con->Open();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			con->Close();
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+
+	}
+};
 }
