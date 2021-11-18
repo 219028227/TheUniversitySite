@@ -22,6 +22,16 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
+		Form^ adhomebck;
+		Adminlecturers(Form^adhomebck1)
+		{
+			adhomebck = adhomebck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
+
 
 	protected:
 		/// <summary>
@@ -132,6 +142,7 @@ namespace TheUniversitySite {
 			this->backbutton->TabIndex = 37;
 			this->backbutton->Text = L"Back";
 			this->backbutton->UseVisualStyleBackColor = true;
+			this->backbutton->Click += gcnew System::EventHandler(this, &Adminlecturers::backbutton_Click);
 			// 
 			// removelecturers
 			// 
@@ -257,5 +268,10 @@ namespace TheUniversitySite {
 
 		}
 #pragma endregion
-	};
+	private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		this->Hide();
+		adhomebck->Show();
+	}
+};
 }

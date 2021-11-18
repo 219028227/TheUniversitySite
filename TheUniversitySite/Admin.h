@@ -1,5 +1,8 @@
 #pragma once
 #include "Adminstudents.h"
+#include "Adminlecturers.h"
+#include "AdminProgrammes.h"
+#include "AdminTimetable.h"
 
 namespace TheUniversitySite {
 
@@ -24,7 +27,7 @@ namespace TheUniversitySite {
 			//
 		}
 		Form^ adlogbck;
-		Admin(Form^adlogbck1)
+		Admin(Form^ adlogbck1)
 		{
 			adlogbck = adlogbck1;
 			InitializeComponent();
@@ -77,7 +80,7 @@ namespace TheUniversitySite {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -139,11 +142,11 @@ namespace TheUniversitySite {
 			// 
 			// backadmin
 			// 
-			this->backadmin->Location = System::Drawing::Point(580, 564);
+			this->backadmin->Location = System::Drawing::Point(564, 564);
 			this->backadmin->Name = L"backadmin";
-			this->backadmin->Size = System::Drawing::Size(46, 43);
+			this->backadmin->Size = System::Drawing::Size(62, 43);
 			this->backadmin->TabIndex = 21;
-			this->backadmin->Text = L"Back";
+			this->backadmin->Text = L"LOGOUT";
 			this->backadmin->UseVisualStyleBackColor = true;
 			this->backadmin->Click += gcnew System::EventHandler(this, &Admin::backadmin_Click);
 			// 
@@ -212,6 +215,7 @@ namespace TheUniversitySite {
 			this->viewtimetable->TabIndex = 15;
 			this->viewtimetable->Text = L"VIEW";
 			this->viewtimetable->UseVisualStyleBackColor = true;
+			this->viewtimetable->Click += gcnew System::EventHandler(this, &Admin::viewtimetable_Click);
 			// 
 			// pictureBox4
 			// 
@@ -241,6 +245,7 @@ namespace TheUniversitySite {
 			this->viewprogrammes->TabIndex = 12;
 			this->viewprogrammes->Text = L"VIEW";
 			this->viewprogrammes->UseVisualStyleBackColor = true;
+			this->viewprogrammes->Click += gcnew System::EventHandler(this, &Admin::viewprogrammes_Click);
 			// 
 			// textBox3
 			// 
@@ -258,6 +263,7 @@ namespace TheUniversitySite {
 			this->viewlecturers->TabIndex = 9;
 			this->viewlecturers->Text = L"VIEW";
 			this->viewlecturers->UseVisualStyleBackColor = true;
+			this->viewlecturers->Click += gcnew System::EventHandler(this, &Admin::viewlecturers_Click);
 			// 
 			// pictureBox2
 			// 
@@ -331,18 +337,36 @@ namespace TheUniversitySite {
 	}
 	private: System::Void STUDENTS_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
-private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void pictureBox4_Click(System::Object^ sender, System::EventArgs^ e) {
-}
-private: System::Void backadmin_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Hide();
-	adlogbck->Show();
-}
-private: System::Void viewstudents_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Hide();
-	Adminstudents^ adstudnxt = gcnew Adminstudents(this);
-	adstudnxt->Show();
-}
-};
+	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void pictureBox4_Click(System::Object^ sender, System::EventArgs^ e) {
+	}
+	private: System::Void backadmin_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		adlogbck->Show();
+	}
+	private: System::Void viewstudents_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		Adminstudents^ adstudnxt = gcnew Adminstudents(this);
+		adstudnxt->Show();
+	}
+
+	private: System::Void viewlecturers_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		this->Hide();
+		Adminlecturers^ adlecnext = gcnew Adminlecturers(this);
+		adlecnext->Show();
+	}
+	private: System::Void viewprogrammes_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		AdminProgrammes^ adprognxt = gcnew AdminProgrammes(this);
+		adprognxt->Show();
+	}
+	private: System::Void viewtimetable_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		AdminTimetable^ adTime = gcnew AdminTimetable(this);
+		adTime->Show();
+	};
+
+	};
 }

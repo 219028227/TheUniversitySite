@@ -22,7 +22,15 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ adhomebck;
+		AdminTimetable(Form^adhomebck1)
+		{
+			adhomebck = adhomebck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -36,6 +44,7 @@ namespace TheUniversitySite {
 		}
 	private: System::Windows::Forms::Panel^ panel2;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Button^ backhomead;
 	protected:
 
 	private:
@@ -54,6 +63,7 @@ namespace TheUniversitySite {
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(AdminTimetable::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->backhomead = (gcnew System::Windows::Forms::Button());
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -61,6 +71,7 @@ namespace TheUniversitySite {
 			// panel2
 			// 
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->backhomead);
 			this->panel2->Controls->Add(this->pictureBox1);
 			this->panel2->Location = System::Drawing::Point(0, 0);
 			this->panel2->Name = L"panel2";
@@ -70,11 +81,21 @@ namespace TheUniversitySite {
 			// pictureBox1
 			// 
 			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
-			this->pictureBox1->Location = System::Drawing::Point(30, 112);
+			this->pictureBox1->Location = System::Drawing::Point(33, 108);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(574, 428);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
+			// 
+			// backhomead
+			// 
+			this->backhomead->Location = System::Drawing::Point(569, 556);
+			this->backhomead->Name = L"backhomead";
+			this->backhomead->Size = System::Drawing::Size(57, 51);
+			this->backhomead->TabIndex = 38;
+			this->backhomead->Text = L"Back";
+			this->backhomead->UseVisualStyleBackColor = true;
+			this->backhomead->Click += gcnew System::EventHandler(this, &AdminTimetable::backhomead_Click);
 			// 
 			// AdminTimetable
 			// 
@@ -93,6 +114,11 @@ namespace TheUniversitySite {
 		}
 #pragma endregion
 	private: System::Void AdminTimetable_Load(System::Object^ sender, System::EventArgs^ e) {
+	}
+	
+	private: System::Void backhomead_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		adhomebck->Show();
 	}
 	};
 }

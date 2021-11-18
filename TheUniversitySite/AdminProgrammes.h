@@ -26,7 +26,15 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ adhomebck;
+		AdminProgrammes(Form^adhomebck1)
+		{
+			adhomebck = adhomebck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -333,8 +341,10 @@ private: System::Void refresh_Click(System::Object^ sender, System::EventArgs^ e
 	}
 
 }
-private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
 
+private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	adhomebck->Show();
 }
 };
 }
