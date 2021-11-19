@@ -1,6 +1,7 @@
 #pragma once
 #include "Adminlogin.h"
 #include "StudentPortal.h"
+#include "Lecturer.h"
 
 namespace TheUniversitySite {
 
@@ -171,10 +172,52 @@ namespace TheUniversitySite {
 	private: System::Void label1_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	bool wrong;
+	String^ EntererdUsername = textBox1->Text;
+	String^ EnteredPassword = password->Text;
+	String^ Dbname;
+	String^ Dbpass;
+	String^ dbrole;
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+		MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where name='" + EntererdUsername + "'", con);
+		con->Open();
+		MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+		while (Dr3->Read()) {
+			Dbname = Dr3->GetString("name");
+			Dbpass = Dr3->GetString("password");
+			dbrole = Dr3->GetString("role");
+		}
+		con->Close();
+		if (EntererdUsername == Dbname) {
+			if (EnteredPassword == Dbpass) {
+				 wrong = false;
+				if (dbrole == "student") {
+					this->Hide();
+					StudentPortal^ stdprtal = gcnew StudentPortal(this);
+					stdprtal->Show();
+				}
+				else if (dbrole == "admin") {
+					this->Hide();
+					Adminlogin^ adloginnext1 = gcnew Adminlogin(this);
+					adloginnext1->Show();
+				}
+				else {
+					this->Hide();
+					Lecturer^ lechome = gcnew Lecturer(this);
+					lechome->Show();
+					
+				}
 
-	this->Hide();
-	StudentPortal^ stdprtal = gcnew StudentPortal(this);
-	stdprtal->Show();
+			}
+		}
+		if (wrong == true) { MessageBox::Show("Username or Password is incorrect"); }
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
 
 
 }

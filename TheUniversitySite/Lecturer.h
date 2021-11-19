@@ -22,7 +22,15 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
-
+		Form^ homebck;
+		Lecturer(Form^ homebck1)
+		{
+			homebck = homebck1;
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+		}
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -183,6 +191,7 @@ namespace TheUniversitySite {
 			this->backbutton->TabIndex = 33;
 			this->backbutton->Text = L"BACK";
 			this->backbutton->UseVisualStyleBackColor = true;
+			this->backbutton->Click += gcnew System::EventHandler(this, &Lecturer::backbutton_Click);
 			// 
 			// programmename
 			// 
@@ -407,5 +416,9 @@ namespace TheUniversitySite {
 	}
 	private: System::Void pictureBox2_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
+private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->Hide();
+	homebck->Show();
+}
 };
 }
