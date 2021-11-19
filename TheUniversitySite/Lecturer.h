@@ -1,5 +1,5 @@
 #pragma once
-
+#include <fstream>
 namespace TheUniversitySite {
 
 	using namespace System;
@@ -16,6 +16,9 @@ namespace TheUniversitySite {
 	public ref class Lecturer : public System::Windows::Forms::Form
 	{
 	public:
+		String^ filename;
+		String^ filepath;
+		String^ filecontent;
 		Lecturer(void)
 		{
 			InitializeComponent();
@@ -24,12 +27,13 @@ namespace TheUniversitySite {
 			//
 		}
 		String^ lecturersdbname;
+		int progID;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	public:
 		Form^ homebck;
 		Lecturer(Form^ homebck1,String^lecname,int progrmfk)
 		{
-					
+			progID = progrmfk;
 			homebck = homebck1;
 			lecturersdbname = lecname;
 			InitializeComponent();
@@ -456,36 +460,43 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 }
 private: System::Void addpractical_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	openFileDialog1->Title = "Open File"
+	
+	openFileDialog1->Title = "Choose File";
 	openFileDialog1->ShowDialog();
 
+	
+	filepath = openFileDialog1->FileName;
+	filename = openFileDialog1->SafeFileName;
+	
 
 }
 private: System::Void submitpractical_Click(System::Object^ sender, System::EventArgs^ e) {
 
-	/*try {
+	try {
 		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
 
 		String^ pracnm = practicalname->Text;
 		DateTime practicdt = pracdate->Value;
 		String^ Type = "practical";
+		int IDD=0;
+		String^ Description;
 
-		MySqlCommand^ cmd = gcnew MySqlCommand("select * from programme", con);
 
-
+		MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values("+IDD+",'"+pracnm+"','"+Description+"','"+Type+"', '"+filepath+"','"+progID+"')", con);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment", con);
 		con->Open();
-		MySqlDataReader^ Dr = cmd2->ExecuteReader();
+		MySqlDataReader^ Dr = cmd->ExecuteReader();
 		con->Close();
 
 		con->Open();
-		Programmes->Items->Clear();
-		MySqlDataReader^ Dr2 = cmd->ExecuteReader();
+		practicalslist->Items->Clear();
+		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
 		while (Dr2->Read()) {
 
-			String^ Programmeslist = Dr2->GetString("programName");
-			String^ ID = Dr2->GetInt32("idProgramme").ToString();
-			Programmes->Items->Add(ID + "    " + Programmeslist);
+			String^ Programmeslist = Dr2->GetString("name");
+			String^ ID = Dr2->GetString("description");
+			practicalslist->Items->Add(Programmeslist + "    " + ID);
 
 		}
 		con->Close();
@@ -493,7 +504,7 @@ private: System::Void submitpractical_Click(System::Object^ sender, System::Even
 	catch (Exception^ Ex)
 	{
 		MessageBox::Show(Ex->Message);
-	}*/
+	}
 }
 };
 }
