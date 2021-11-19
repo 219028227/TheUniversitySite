@@ -189,8 +189,10 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 			Dbpass = Dr3->GetString("password");
 			dbrole = Dr3->GetString("role");
 		}
-		con->Close();
+		con->Close();		
+
 		if (EntererdUsername == Dbname) {
+
 			if (EnteredPassword == Dbpass) {
 				 wrong = false;
 				if (dbrole == "student") {
@@ -212,7 +214,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 
 			}
 		}
-		if (wrong == true) { MessageBox::Show("Username or Password is incorrect"); }
+		 if(wrong!=false){MessageBox::Show("Username or Password is incorrect"); }
 	}
 	catch (Exception^ Ex)
 	{
