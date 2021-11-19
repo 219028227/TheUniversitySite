@@ -1,4 +1,5 @@
 #pragma once
+#include "HomePage.h"
 
 namespace TheUniversitySite {
 
@@ -8,7 +9,7 @@ namespace TheUniversitySite {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	using namespace MySql::Data::MySqlClient;
 	/// <summary>
 	/// Summary for StudentPortal
 	/// </summary>
@@ -23,10 +24,35 @@ namespace TheUniversitySite {
 			//
 		}
 		Form^ bck;
-		StudentPortal(Form^bck1)
+		String^ studdbname;
+		int progID;
+		StudentPortal(Form^bck1,String^ stdname, int prgmnum)
 		{
 			bck = bck1;
+			progID = prgmnum;
+			studdbname = stdname;
 			InitializeComponent();
+
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+
+				MySqlCommand^ cmd3 = gcnew MySqlCommand("select * from programme where idProgramme = " + prgmnum + "", con);
+				con->Open();
+				MySqlDataReader^ Dr = cmd3->ExecuteReader();
+				while (Dr->Read()) {
+					programmename1->Text = Dr->GetString("programName");
+					studentnumber->Text = studdbname;
+
+				}
+				con->Close();				
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
+
 		}
 	protected:
 		/// <summary>
@@ -77,7 +103,8 @@ namespace TheUniversitySite {
 
 	private: System::Windows::Forms::TextBox^ textBox2;
 	private: System::Windows::Forms::TextBox^ studentnumber;
-	private: System::Windows::Forms::TextBox^ programmename;
+		private: System::Windows::Forms::TextBox^ programmename1;
+
 	private: System::Windows::Forms::Label^ label6;
 	private: System::Windows::Forms::Label^ label5;
 	private: System::Windows::Forms::Label^ label4;
@@ -106,7 +133,7 @@ namespace TheUniversitySite {
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
-			this->programmename = (gcnew System::Windows::Forms::TextBox());
+			this->programmename1 = (gcnew System::Windows::Forms::TextBox());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -139,7 +166,7 @@ namespace TheUniversitySite {
 			this->panel2->Controls->Add(this->label6);
 			this->panel2->Controls->Add(this->label5);
 			this->panel2->Controls->Add(this->label4);
-			this->panel2->Controls->Add(this->programmename);
+			this->panel2->Controls->Add(this->programmename1);
 			this->panel2->Controls->Add(this->label3);
 			this->panel2->Controls->Add(this->label2);
 			this->panel2->Controls->Add(this->label1);
@@ -213,13 +240,13 @@ namespace TheUniversitySite {
 			this->label4->TabIndex = 23;
 			this->label4->Text = L"Practical";
 			// 
-			// programmename
+			// programmename1
 			// 
-			this->programmename->Location = System::Drawing::Point(425, 55);
-			this->programmename->Multiline = true;
-			this->programmename->Name = L"programmename";
-			this->programmename->Size = System::Drawing::Size(164, 25);
-			this->programmename->TabIndex = 22;
+			this->programmename1->Location = System::Drawing::Point(425, 55);
+			this->programmename1->Multiline = true;
+			this->programmename1->Name = L"programmename1";
+			this->programmename1->Size = System::Drawing::Size(164, 25);
+			this->programmename1->TabIndex = 22;
 			// 
 			// label3
 			// 

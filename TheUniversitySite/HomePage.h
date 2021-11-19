@@ -199,12 +199,12 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 				 wrong = false;
 				if (dbrole == "student") {
 					this->Hide();
-					StudentPortal^ stdprtal = gcnew StudentPortal(this);
+					StudentPortal^ stdprtal = gcnew StudentPortal(this,Dbname,progrmnum);
 					stdprtal->Show();
 				}
 				else if (dbrole == "admin") {
 					this->Hide();
-					Adminlogin^ adloginnext1 = gcnew Adminlogin(this);
+					Admin^ adloginnext1 = gcnew Admin(this);
 					adloginnext1->Show();
 				}
 				else {
