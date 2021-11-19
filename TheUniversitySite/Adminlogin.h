@@ -76,12 +76,12 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(Adminlogin::typeid));
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
+			this->backmain = (gcnew System::Windows::Forms::Button());
 			this->login = (gcnew System::Windows::Forms::Button());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->password = (gcnew System::Windows::Forms::TextBox());
 			this->admin = (gcnew System::Windows::Forms::TextBox());
-			this->backmain = (gcnew System::Windows::Forms::Button());
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -98,6 +98,16 @@ namespace TheUniversitySite {
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(601, 599);
 			this->panel1->TabIndex = 1;
+			// 
+			// backmain
+			// 
+			this->backmain->Location = System::Drawing::Point(542, 537);
+			this->backmain->Name = L"backmain";
+			this->backmain->Size = System::Drawing::Size(46, 43);
+			this->backmain->TabIndex = 22;
+			this->backmain->Text = L"Back";
+			this->backmain->UseVisualStyleBackColor = true;
+			this->backmain->Click += gcnew System::EventHandler(this, &Adminlogin::backmain_Click);
 			// 
 			// login
 			// 
@@ -142,16 +152,6 @@ namespace TheUniversitySite {
 			this->admin->Size = System::Drawing::Size(184, 20);
 			this->admin->TabIndex = 0;
 			// 
-			// backmain
-			// 
-			this->backmain->Location = System::Drawing::Point(542, 537);
-			this->backmain->Name = L"backmain";
-			this->backmain->Size = System::Drawing::Size(46, 43);
-			this->backmain->TabIndex = 22;
-			this->backmain->Text = L"Back";
-			this->backmain->UseVisualStyleBackColor = true;
-			this->backmain->Click += gcnew System::EventHandler(this, &Adminlogin::backmain_Click);
-			// 
 			// Adminlogin
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -160,6 +160,7 @@ namespace TheUniversitySite {
 			this->Controls->Add(this->panel1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Adminlogin";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Adminlogin";
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
