@@ -17,8 +17,10 @@ namespace TheUniversitySite {
 	{
 	public:
 		String^ filename;
+		String^ filename2;
 		String^ filepath;
-		String^ filecontent;
+		String^ filepath2;
+		
 		Lecturer(void)
 		{
 			InitializeComponent();
@@ -59,10 +61,28 @@ namespace TheUniversitySite {
 					String^ Programmeslist = Dr2->GetString("name");
 					String^ ID = Dr2->GetInt32("idassigment").ToString();
 					String^ INDV = Dr2->GetString("invidulator");
+					String^ type = Dr2->GetString("type");
 
-					practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
+					practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
 				}
 				con->Close();
+				MySqlCommand^ cmd5 = gcnew MySqlCommand("select * from assigment  where programnameid= " + progID + "", con);
+				con->Open();
+				projectslist->Items->Clear();
+				MySqlDataReader^ Dr5 = cmd5->ExecuteReader();
+				while (Dr5->Read()) {
+
+					String^ Programmeslist = Dr5->GetString("name");
+					String^ ID = Dr5->GetInt32("idassigment").ToString();
+					String^ INDV = Dr5->GetString("invidulator");
+					String^ type = Dr5->GetString("type");
+
+					projectslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
+				}
+				con->Close();
+
+
+
 			}
 			catch (Exception^ Ex)
 			{
@@ -250,6 +270,7 @@ namespace TheUniversitySite {
 			this->addproject->TabIndex = 31;
 			this->addproject->Text = L"ADD PROJECT";
 			this->addproject->UseVisualStyleBackColor = true;
+			this->addproject->Click += gcnew System::EventHandler(this, &Lecturer::addproject_Click);
 			// 
 			// projectdate
 			// 
@@ -284,6 +305,7 @@ namespace TheUniversitySite {
 			this->removeproject->TabIndex = 27;
 			this->removeproject->Text = L"REMOVE";
 			this->removeproject->UseVisualStyleBackColor = true;
+			this->removeproject->Click += gcnew System::EventHandler(this, &Lecturer::removeproject_Click);
 			// 
 			// submitproject
 			// 
@@ -293,6 +315,7 @@ namespace TheUniversitySite {
 			this->submitproject->TabIndex = 26;
 			this->submitproject->Text = L"SUBMIT";
 			this->submitproject->UseVisualStyleBackColor = true;
+			this->submitproject->Click += gcnew System::EventHandler(this, &Lecturer::submitproject_Click);
 			// 
 			// projectname
 			// 
@@ -492,12 +515,11 @@ namespace TheUniversitySite {
 			DateTime practicdt = pracdate->Value;
 			String^ Type = "practical";
 			int IDD = 0;
-			int IDD2 = 0;
-			String^ Description;
+			int IDD2 = 0;			
 			int assfk;
 
 
-			MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values(" + IDD + ",'" + pracnm + "','" + Description + "','" + Type + "', '" + filepath + "','" + lecturersdbname + "','" + progID + "')", con);
+			MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values(" + IDD + ",'" + pracnm + "','" + Type + "', '" + filepath + "','" + lecturersdbname + "','" + progID + "')", con);
 			MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment  where programnameid= " + progID + "", con);
 			MySqlCommand^ cmd3 = gcnew MySqlCommand("select idassigment From assigment order by idassigment Desc Limit 1", con);
 
@@ -513,8 +535,10 @@ namespace TheUniversitySite {
 				String^ Programmeslist = Dr2->GetString("name");
 				String^ ID = Dr2->GetInt32("idassigment").ToString();
 				String^ INDV = Dr2->GetString("invidulator");
+				String^ type = Dr2->GetString("type");
+				
 
-				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
+				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
 			}
 			con->Close();
 
@@ -568,8 +592,9 @@ namespace TheUniversitySite {
 				String^ Programmeslist = Dr->GetString("name");
 				String^ ID = Dr->GetInt32("idassigment").ToString();
 				String^ INDV = Dr->GetString("invidulator");
+				String^ type = Dr->GetString("type");
 
-				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
+				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
 			}
 			con->Close();
 		}
@@ -579,6 +604,119 @@ namespace TheUniversitySite {
 
 		}
 	}
-	};
+
+	private: System::Void addproject_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		openFileDialog1->Title = "Choose File";
+		openFileDialog1->ShowDialog();
+		filepath2 = openFileDialog1->FileName;
+		filename2 = openFileDialog1->SafeFileName;
+
+	}
+
+private: System::Void submitproject_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+		String^ pracnm2 = projectname->Text;
+		DateTime practicdt2 = projectdate->Value;
+		String^ Type = "project";
+		int IDD = 0;
+		int IDD2 = 0;
+		int assfk2;
+
+
+		MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values(" + IDD + ",'" + pracnm2 + "','" + Type + "', '" + filepath2 + "','" + lecturersdbname + "','" + progID + "')", con);
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment  where programnameid= " + progID + "", con);
+		MySqlCommand^ cmd3 = gcnew MySqlCommand("select idassigment From assigment order by idassigment Desc Limit 1", con);
+
+		con->Open();
+		MySqlDataReader^ Dr = cmd->ExecuteReader();
+		con->Close();
+
+		con->Open();
+		projectslist->Items->Clear();
+		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+		while (Dr2->Read()) {
+
+			String^ Programmeslist = Dr2->GetString("name");
+			String^ ID = Dr2->GetInt32("idassigment").ToString();
+			String^ INDV = Dr2->GetString("invidulator");
+			String^ type = Dr2->GetString("type");
+
+			projectslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
+		}
+		con->Close();
+
+		con->Open();
+		MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+		while (Dr3->Read()) {
+			assfk2 = Dr3->GetInt32(0);
+		}
+		con->Close();
+		MySqlCommand^ cmd4 = gcnew MySqlCommand("insert into dates values(" + IDD2 + ",'" + practicdt2 + "','" + assfk2 + "')", con);
+
+		con->Open();
+		MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+		con->Close();
+
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}
+
+}
+
+private: System::Void removeproject_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+		String^ deltrow = projectslist->SelectedItem->ToString();
+		String^ deltrow2 = deltrow->Substring(0, 2);
+		int Deltrow = Int32::Parse(deltrow2);
+
+
+		MySqlCommand^ cmd3 = gcnew MySqlCommand("delete from dates where assignmentfk = " + Deltrow + "", con);
+		MySqlCommand^ cmd = gcnew MySqlCommand("select * from assigment  where type =  'project' ", con);
+
+		con->Open();
+		MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+		con->Close();
+
+		MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from assigment where idassigment = " + Deltrow + " ", con);
+		con->Open();
+		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+		con->Close();
+
+		con->Open();
+		projectslist->Items->Clear();
+		MySqlDataReader^ Dr = cmd->ExecuteReader();
+		while (Dr->Read()) {
+			
+				String^ Programmeslist = Dr->GetString("name");
+				String^ ID = Dr->GetInt32("idassigment").ToString();
+				String^ INDV = Dr->GetString("invidulator");
+				String^ type = Dr->GetString("type");
+				
+					projectslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV + "     " + type);
+				
+			
+		}
+		con->Close();
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+
+	}
+
+
+}
+};
 }
 
