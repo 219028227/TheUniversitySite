@@ -380,7 +380,7 @@ namespace TheUniversitySite {
 			String^ Number = studentnumber->Text;	
 			String^ Role = "student";
 			int Programme= ProgrammeChosen;
-			int Id;
+			int Id=0;
 			String^ stdname = studnamebx->Text; 
 			String^ Email = emailstud->Text;
 			

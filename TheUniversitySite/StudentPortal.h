@@ -1,5 +1,5 @@
 #pragma once
-#include "HomePage.h"
+
 
 namespace TheUniversitySite {
 
@@ -40,13 +40,30 @@ namespace TheUniversitySite {
 
 				MySqlCommand^ cmd3 = gcnew MySqlCommand("select * from programme where idProgramme = " + prgmnum + "", con);
 				con->Open();
-				MySqlDataReader^ Dr = cmd3->ExecuteReader();
-				while (Dr->Read()) {
-					programmename1->Text = Dr->GetString("programName");
+				MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+				while (Dr3->Read()) {
+					programmename1->Text = Dr3->GetString("programName");
 					studentnumber->Text = studdbname;
 
 				}
-				con->Close();				
+				con->Close();
+
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment where programnameid= " + progID + "", con);
+				con->Open();
+
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+					String^ Programmeslist = Dr2->GetString("name");
+					String^ Programmeslist2 = Dr2->GetString("type");
+					if (Programmeslist2 == "practical") {
+						choosepractical->Items->Add(Programmeslist);
+						choosepractical2->Items->Add(Programmeslist);
+					}
+					else { chooseproject->Items->Add(Programmeslist); }
+				}
+				con->Close();
+
+
 			}
 			catch (Exception^ Ex)
 			{
@@ -200,7 +217,7 @@ namespace TheUniversitySite {
 			this->backbutton->Name = L"backbutton";
 			this->backbutton->Size = System::Drawing::Size(63, 56);
 			this->backbutton->TabIndex = 26;
-			this->backbutton->Text = L"BACK";
+			this->backbutton->Text = L"LOGOUT";
 			this->backbutton->UseVisualStyleBackColor = true;
 			this->backbutton->Click += gcnew System::EventHandler(this, &StudentPortal::backbutton_Click);
 			// 
@@ -245,6 +262,7 @@ namespace TheUniversitySite {
 			this->programmename1->Location = System::Drawing::Point(425, 55);
 			this->programmename1->Multiline = true;
 			this->programmename1->Name = L"programmename1";
+			this->programmename1->ReadOnly = true;
 			this->programmename1->Size = System::Drawing::Size(164, 25);
 			this->programmename1->TabIndex = 22;
 			// 
@@ -436,6 +454,7 @@ namespace TheUniversitySite {
 			this->studentnumber->Location = System::Drawing::Point(425, 12);
 			this->studentnumber->Multiline = true;
 			this->studentnumber->Name = L"studentnumber";
+			this->studentnumber->ReadOnly = true;
 			this->studentnumber->Size = System::Drawing::Size(164, 25);
 			this->studentnumber->TabIndex = 0;
 			// 
@@ -463,5 +482,6 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 	this->Hide();
 	bck->Show();
 }
+
 };
 }
