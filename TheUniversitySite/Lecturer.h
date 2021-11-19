@@ -31,25 +31,36 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
 	public:
 		Form^ homebck;
-		Lecturer(Form^ homebck1,String^lecname,int progrmfk)
+		Lecturer(Form^ homebck1, String^ lecname, int progrmfk)
 		{
 			progID = progrmfk;
 			homebck = homebck1;
 			lecturersdbname = lecname;
 			InitializeComponent();
-			
+
 			try {
 				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-															
-				
-				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme where idProgramme = " + progrmfk + "", con);
+
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment where programnameid= " + progID + "", con);
+				MySqlCommand^ cmd3 = gcnew MySqlCommand("select * from programme where idProgramme = " + progrmfk + "", con);
 				con->Open();
-				MySqlDataReader^ Dr = cmd2->ExecuteReader();		
+				MySqlDataReader^ Dr = cmd3->ExecuteReader();
 				while (Dr->Read()) {
-					programmename->Text = Dr->GetString("programName");				
+					programmename->Text = Dr->GetString("programName");
 					lecturersname->Text = lecturersdbname;
 
+				}
+				con->Close();
+				con->Open();
+				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+				while (Dr2->Read()) {
+
+					String^ Programmeslist = Dr2->GetString("name");
+					String^ ID = Dr2->GetInt32("idassigment").ToString();
+					String^ INDV = Dr2->GetString("invidulator");
+
+					practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
 				}
 				con->Close();
 			}
@@ -141,7 +152,7 @@ namespace TheUniversitySite {
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+		System::ComponentModel::Container^ components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -209,12 +220,12 @@ namespace TheUniversitySite {
 			this->panel2->Controls->Add(this->practicalslist);
 			this->panel2->Location = System::Drawing::Point(0, 1);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(603, 627);
+			this->panel2->Size = System::Drawing::Size(608, 642);
 			this->panel2->TabIndex = 4;
 			// 
 			// backbutton
 			// 
-			this->backbutton->Location = System::Drawing::Point(534, 553);
+			this->backbutton->Location = System::Drawing::Point(536, 571);
 			this->backbutton->Name = L"backbutton";
 			this->backbutton->Size = System::Drawing::Size(56, 50);
 			this->backbutton->TabIndex = 33;
@@ -296,7 +307,7 @@ namespace TheUniversitySite {
 			this->addpractical->Name = L"addpractical";
 			this->addpractical->Size = System::Drawing::Size(171, 23);
 			this->addpractical->TabIndex = 24;
-			this->addpractical->Text = L"CHOOSE PRACTICAL";
+			this->addpractical->Text = L"ADD PRACTICAL";
 			this->addpractical->UseVisualStyleBackColor = true;
 			this->addpractical->Click += gcnew System::EventHandler(this, &Lecturer::addpractical_Click);
 			// 
@@ -333,10 +344,11 @@ namespace TheUniversitySite {
 			this->removepractical->TabIndex = 15;
 			this->removepractical->Text = L"REMOVE";
 			this->removepractical->UseVisualStyleBackColor = true;
+			this->removepractical->Click += gcnew System::EventHandler(this, &Lecturer::removepractical_Click);
 			// 
 			// markscript
 			// 
-			this->markscript->Location = System::Drawing::Point(261, 587);
+			this->markscript->Location = System::Drawing::Point(261, 598);
 			this->markscript->Name = L"markscript";
 			this->markscript->Size = System::Drawing::Size(110, 23);
 			this->markscript->TabIndex = 14;
@@ -349,7 +361,7 @@ namespace TheUniversitySite {
 			this->submitpractical->Name = L"submitpractical";
 			this->submitpractical->Size = System::Drawing::Size(75, 23);
 			this->submitpractical->TabIndex = 12;
-			this->submitpractical->Text = L"SUBMIT";
+			this->submitpractical->Text = L"UPLOAD";
 			this->submitpractical->UseVisualStyleBackColor = true;
 			this->submitpractical->Click += gcnew System::EventHandler(this, &Lecturer::submitpractical_Click);
 			// 
@@ -359,7 +371,7 @@ namespace TheUniversitySite {
 			this->label3->BackColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(12, 447);
+			this->label3->Location = System::Drawing::Point(9, 438);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(157, 20);
 			this->label3->TabIndex = 11;
@@ -371,7 +383,7 @@ namespace TheUniversitySite {
 			this->label2->BackColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(9, 278);
+			this->label2->Location = System::Drawing::Point(9, 265);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(93, 20);
 			this->label2->TabIndex = 10;
@@ -383,7 +395,7 @@ namespace TheUniversitySite {
 			this->label1->BackColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(9, 110);
+			this->label1->Location = System::Drawing::Point(9, 92);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(109, 20);
 			this->label1->TabIndex = 9;
@@ -408,7 +420,7 @@ namespace TheUniversitySite {
 			// studentsscripts
 			// 
 			this->studentsscripts->FormattingEnabled = true;
-			this->studentsscripts->Location = System::Drawing::Point(15, 447);
+			this->studentsscripts->Location = System::Drawing::Point(15, 461);
 			this->studentsscripts->Name = L"studentsscripts";
 			this->studentsscripts->Size = System::Drawing::Size(356, 134);
 			this->studentsscripts->TabIndex = 2;
@@ -416,7 +428,7 @@ namespace TheUniversitySite {
 			// projectslist
 			// 
 			this->projectslist->FormattingEnabled = true;
-			this->projectslist->Location = System::Drawing::Point(15, 278);
+			this->projectslist->Location = System::Drawing::Point(15, 288);
 			this->projectslist->Name = L"projectslist";
 			this->projectslist->Size = System::Drawing::Size(356, 147);
 			this->projectslist->TabIndex = 1;
@@ -424,7 +436,7 @@ namespace TheUniversitySite {
 			// practicalslist
 			// 
 			this->practicalslist->FormattingEnabled = true;
-			this->practicalslist->Location = System::Drawing::Point(13, 110);
+			this->practicalslist->Location = System::Drawing::Point(13, 115);
 			this->practicalslist->Name = L"practicalslist";
 			this->practicalslist->Size = System::Drawing::Size(358, 147);
 			this->practicalslist->TabIndex = 0;
@@ -438,7 +450,7 @@ namespace TheUniversitySite {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(601, 616);
+			this->ClientSize = System::Drawing::Size(604, 634);
 			this->Controls->Add(this->panel2);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Lecturer";
@@ -454,57 +466,119 @@ namespace TheUniversitySite {
 	}
 	private: System::Void pictureBox2_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
-private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
-	this->Hide();
-	homebck->Show();
-}
-private: System::Void addpractical_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	
-	openFileDialog1->Title = "Choose File";
-	openFileDialog1->ShowDialog();
-
-	
-	filepath = openFileDialog1->FileName;
-	filename = openFileDialog1->SafeFileName;
-	
-
-}
-private: System::Void submitpractical_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	try {
-		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
-		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-
-		String^ pracnm = practicalname->Text;
-		DateTime practicdt = pracdate->Value;
-		String^ Type = "practical";
-		int IDD=0;
-		String^ Description;
+	private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
+		this->Hide();
+		homebck->Show();
+	}
+	private: System::Void addpractical_Click(System::Object^ sender, System::EventArgs^ e) {
 
 
-		MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values("+IDD+",'"+pracnm+"','"+Description+"','"+Type+"', '"+filepath+"','"+progID+"')", con);
-		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment", con);
-		con->Open();
-		MySqlDataReader^ Dr = cmd->ExecuteReader();
-		con->Close();
+		openFileDialog1->Title = "Choose File";
+		openFileDialog1->ShowDialog();
 
-		con->Open();
-		practicalslist->Items->Clear();
-		MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
-		while (Dr2->Read()) {
 
-			String^ Programmeslist = Dr2->GetString("name");
-			String^ ID = Dr2->GetString("description");
-			practicalslist->Items->Add(Programmeslist + "    " + ID);
+		filepath = openFileDialog1->FileName;
+		filename = openFileDialog1->SafeFileName;
+
+
+	}
+	private: System::Void submitpractical_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ pracnm = practicalname->Text;
+			DateTime practicdt = pracdate->Value;
+			String^ Type = "practical";
+			int IDD = 0;
+			int IDD2 = 0;
+			String^ Description;
+			int assfk;
+
+
+			MySqlCommand^ cmd = gcnew MySqlCommand("insert into assigment values(" + IDD + ",'" + pracnm + "','" + Description + "','" + Type + "', '" + filepath + "','" + lecturersdbname + "','" + progID + "')", con);
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from assigment  where programnameid= " + progID + "", con);
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("select idassigment From assigment order by idassigment Desc Limit 1", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			con->Close();
+
+			con->Open();
+			practicalslist->Items->Clear();
+			MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+			while (Dr2->Read()) {
+
+				String^ Programmeslist = Dr2->GetString("name");
+				String^ ID = Dr2->GetInt32("idassigment").ToString();
+				String^ INDV = Dr2->GetString("invidulator");
+
+				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
+			}
+			con->Close();
+
+			con->Open();
+			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+			while (Dr3->Read()) {
+				assfk = Dr3->GetInt32(0);
+			}
+
+			con->Close();
+			MySqlCommand^ cmd4 = gcnew MySqlCommand("insert into dates values(" + IDD2 + ",'" + practicdt + "','" + assfk + "')", con);
+			
+			con->Open();
+			MySqlDataReader^ Dr4 = cmd4->ExecuteReader();
+			con->Close();
 
 		}
-		con->Close();
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
 	}
-	catch (Exception^ Ex)
-	{
-		MessageBox::Show(Ex->Message);
+	private: System::Void removepractical_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = practicalslist->SelectedItem->ToString();
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+
+			
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("delete from dates where assignmentfk = " + Deltrow + "", con);
+			MySqlCommand^ cmd = gcnew MySqlCommand("select * from assigment  where programnameid= " + progID + "", con);
+
+			con->Open();
+			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+			con->Close();
+
+            MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from assigment where idassigment = " + Deltrow + " ", con);
+			con->Open();
+			MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
+			con->Close();
+
+			con->Open();
+			practicalslist->Items->Clear();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			while (Dr->Read()) {
+
+				String^ Programmeslist = Dr->GetString("name");
+				String^ ID = Dr->GetInt32("idassigment").ToString();
+				String^ INDV = Dr->GetString("invidulator");
+
+				practicalslist->Items->Add(ID + "    " + Programmeslist + "     " + INDV);
+			}
+			con->Close();
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+
+		}
 	}
+	};
 }
-};
-}
+
