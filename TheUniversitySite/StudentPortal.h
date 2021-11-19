@@ -26,11 +26,22 @@ namespace TheUniversitySite {
 		Form^ bck;
 		String^ studdbname;
 		int progID;
-		StudentPortal(Form^bck1,String^ stdname, int prgmnum)
+		String^ Filepath;
+		String^ Filename;
+	private: System::Windows::Forms::CheckBox^ pracslec1;
+	private: System::Windows::Forms::CheckBox^ projslec;
+	private: System::Windows::Forms::CheckBox^ pracslec2;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	public:
+
+	public:
+		int StudUnID;
+		StudentPortal(Form^bck1,String^ stdname, int prgmnum,int Unid)
 		{
 			bck = bck1;
 			progID = prgmnum;
 			studdbname = stdname;
+			StudUnID = Unid;
 			InitializeComponent();
 
 			try {
@@ -54,12 +65,14 @@ namespace TheUniversitySite {
 				MySqlDataReader^ Dr2 = cmd2->ExecuteReader();
 				while (Dr2->Read()) {
 					String^ Programmeslist = Dr2->GetString("name");
+					int id = Dr2->GetInt32("idassigment");
+					String^ invid = Dr2->GetString("invidulator");
 					String^ Programmeslist2 = Dr2->GetString("type");
 					if (Programmeslist2 == "practical") {
-						choosepractical->Items->Add(Programmeslist);
-						choosepractical2->Items->Add(Programmeslist);
+						choosepractical->Items->Add(id+"    "+Programmeslist+"    "+invid);
+						choosepractical2->Items->Add(id+"    "+Programmeslist+"    "+invid);
 					}
-					else { chooseproject->Items->Add(Programmeslist); }
+					else { chooseproject->Items->Add(id+"    "+Programmeslist+"    "+invid); }
 				}
 				con->Close();
 
@@ -92,7 +105,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Button^ upload2;
 
 
-	private: System::Windows::Forms::RadioButton^ selectprac2;
+
 
 	private: System::Windows::Forms::ComboBox^ choosepractical2;
 
@@ -103,7 +116,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Button^ upload1;
 
 
-	private: System::Windows::Forms::RadioButton^ selectprac1;
+
 
 	private: System::Windows::Forms::ComboBox^ choosepractical;
 
@@ -114,7 +127,7 @@ namespace TheUniversitySite {
 	private: System::Windows::Forms::Button^ upload3;
 
 
-	private: System::Windows::Forms::RadioButton^ selectproject;
+
 
 	private: System::Windows::Forms::ComboBox^ chooseproject;
 
@@ -146,6 +159,9 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(StudentPortal::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->projslec = (gcnew System::Windows::Forms::CheckBox());
+			this->pracslec2 = (gcnew System::Windows::Forms::CheckBox());
+			this->pracslec1 = (gcnew System::Windows::Forms::CheckBox());
 			this->backbutton = (gcnew System::Windows::Forms::Button());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -157,28 +173,29 @@ namespace TheUniversitySite {
 			this->grades2 = (gcnew System::Windows::Forms::TextBox());
 			this->practicalupload2 = (gcnew System::Windows::Forms::TextBox());
 			this->upload2 = (gcnew System::Windows::Forms::Button());
-			this->selectprac2 = (gcnew System::Windows::Forms::RadioButton());
 			this->choosepractical2 = (gcnew System::Windows::Forms::ComboBox());
 			this->textBox10 = (gcnew System::Windows::Forms::TextBox());
 			this->grades1 = (gcnew System::Windows::Forms::TextBox());
 			this->practicalupload1 = (gcnew System::Windows::Forms::TextBox());
 			this->upload1 = (gcnew System::Windows::Forms::Button());
-			this->selectprac1 = (gcnew System::Windows::Forms::RadioButton());
 			this->choosepractical = (gcnew System::Windows::Forms::ComboBox());
 			this->textBox7 = (gcnew System::Windows::Forms::TextBox());
 			this->grades3 = (gcnew System::Windows::Forms::TextBox());
 			this->projectupload = (gcnew System::Windows::Forms::TextBox());
 			this->upload3 = (gcnew System::Windows::Forms::Button());
-			this->selectproject = (gcnew System::Windows::Forms::RadioButton());
 			this->chooseproject = (gcnew System::Windows::Forms::ComboBox());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->studentnumber = (gcnew System::Windows::Forms::TextBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// panel2
 			// 
 			this->panel2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"panel2.BackgroundImage")));
+			this->panel2->Controls->Add(this->projslec);
+			this->panel2->Controls->Add(this->pracslec2);
+			this->panel2->Controls->Add(this->pracslec1);
 			this->panel2->Controls->Add(this->backbutton);
 			this->panel2->Controls->Add(this->label6);
 			this->panel2->Controls->Add(this->label5);
@@ -190,19 +207,16 @@ namespace TheUniversitySite {
 			this->panel2->Controls->Add(this->grades2);
 			this->panel2->Controls->Add(this->practicalupload2);
 			this->panel2->Controls->Add(this->upload2);
-			this->panel2->Controls->Add(this->selectprac2);
 			this->panel2->Controls->Add(this->choosepractical2);
 			this->panel2->Controls->Add(this->textBox10);
 			this->panel2->Controls->Add(this->grades1);
 			this->panel2->Controls->Add(this->practicalupload1);
 			this->panel2->Controls->Add(this->upload1);
-			this->panel2->Controls->Add(this->selectprac1);
 			this->panel2->Controls->Add(this->choosepractical);
 			this->panel2->Controls->Add(this->textBox7);
 			this->panel2->Controls->Add(this->grades3);
 			this->panel2->Controls->Add(this->projectupload);
 			this->panel2->Controls->Add(this->upload3);
-			this->panel2->Controls->Add(this->selectproject);
 			this->panel2->Controls->Add(this->chooseproject);
 			this->panel2->Controls->Add(this->textBox2);
 			this->panel2->Controls->Add(this->studentnumber);
@@ -210,6 +224,37 @@ namespace TheUniversitySite {
 			this->panel2->Name = L"panel2";
 			this->panel2->Size = System::Drawing::Size(604, 610);
 			this->panel2->TabIndex = 4;
+			// 
+			// projslec
+			// 
+			this->projslec->AutoSize = true;
+			this->projslec->Location = System::Drawing::Point(292, 458);
+			this->projslec->Name = L"projslec";
+			this->projslec->Size = System::Drawing::Size(67, 17);
+			this->projslec->TabIndex = 29;
+			this->projslec->Text = L"SELECT";
+			this->projslec->UseVisualStyleBackColor = true;
+			// 
+			// pracslec2
+			// 
+			this->pracslec2->AutoSize = true;
+			this->pracslec2->Location = System::Drawing::Point(292, 298);
+			this->pracslec2->Name = L"pracslec2";
+			this->pracslec2->Size = System::Drawing::Size(67, 17);
+			this->pracslec2->TabIndex = 28;
+			this->pracslec2->Text = L"SELECT";
+			this->pracslec2->UseVisualStyleBackColor = true;
+			// 
+			// pracslec1
+			// 
+			this->pracslec1->AutoSize = true;
+			this->pracslec1->Location = System::Drawing::Point(292, 145);
+			this->pracslec1->Name = L"pracslec1";
+			this->pracslec1->Size = System::Drawing::Size(67, 17);
+			this->pracslec1->TabIndex = 27;
+			this->pracslec1->Text = L"SELECT";
+			this->pracslec1->UseVisualStyleBackColor = true;
+			this->pracslec1->CheckedChanged += gcnew System::EventHandler(this, &StudentPortal::pracslec1_CheckedChanged);
 			// 
 			// backbutton
 			// 
@@ -320,17 +365,6 @@ namespace TheUniversitySite {
 			this->upload2->Text = L"UPLOAD";
 			this->upload2->UseVisualStyleBackColor = true;
 			// 
-			// selectprac2
-			// 
-			this->selectprac2->AutoSize = true;
-			this->selectprac2->Location = System::Drawing::Point(292, 295);
-			this->selectprac2->Name = L"selectprac2";
-			this->selectprac2->Size = System::Drawing::Size(128, 17);
-			this->selectprac2->TabIndex = 15;
-			this->selectprac2->TabStop = true;
-			this->selectprac2->Text = L"SELECT PRACTICAL";
-			this->selectprac2->UseVisualStyleBackColor = true;
-			// 
 			// choosepractical2
 			// 
 			this->choosepractical2->FormattingEnabled = true;
@@ -370,17 +404,7 @@ namespace TheUniversitySite {
 			this->upload1->TabIndex = 10;
 			this->upload1->Text = L"UPLOAD";
 			this->upload1->UseVisualStyleBackColor = true;
-			// 
-			// selectprac1
-			// 
-			this->selectprac1->AutoSize = true;
-			this->selectprac1->Location = System::Drawing::Point(292, 142);
-			this->selectprac1->Name = L"selectprac1";
-			this->selectprac1->Size = System::Drawing::Size(128, 17);
-			this->selectprac1->TabIndex = 9;
-			this->selectprac1->TabStop = true;
-			this->selectprac1->Text = L"SELECT PRACTICAL";
-			this->selectprac1->UseVisualStyleBackColor = true;
+			this->upload1->Click += gcnew System::EventHandler(this, &StudentPortal::upload1_Click);
 			// 
 			// choosepractical
 			// 
@@ -422,17 +446,6 @@ namespace TheUniversitySite {
 			this->upload3->Text = L"UPLOAD";
 			this->upload3->UseVisualStyleBackColor = true;
 			// 
-			// selectproject
-			// 
-			this->selectproject->AutoSize = true;
-			this->selectproject->Location = System::Drawing::Point(292, 455);
-			this->selectproject->Name = L"selectproject";
-			this->selectproject->Size = System::Drawing::Size(118, 17);
-			this->selectproject->TabIndex = 3;
-			this->selectproject->TabStop = true;
-			this->selectproject->Text = L"SELECT PROJECT";
-			this->selectproject->UseVisualStyleBackColor = true;
-			// 
 			// chooseproject
 			// 
 			this->chooseproject->FormattingEnabled = true;
@@ -458,6 +471,11 @@ namespace TheUniversitySite {
 			this->studentnumber->Size = System::Drawing::Size(164, 25);
 			this->studentnumber->TabIndex = 0;
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			this->openFileDialog1->InitialDirectory = L"C:\\";
+			// 
 			// StudentPortal
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -480,8 +498,80 @@ namespace TheUniversitySite {
 private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	this->Hide();
-	bck->Show();
+	bck->Show();}
+
+private: System::Void pracslec1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+	  
+	int selectedprac;
+	if (pracslec1->Checked==true) {
+		choosepractical->Enabled = false;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = choosepractical->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("insert into userassignments values(" + IDUA + " ," + StudUnID + "," + Deltrow + " )", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+
+	}
+	else {
+		choosepractical->Enabled = true;
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = choosepractical->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from userassignments where assignuserfk1= " + Deltrow + " and userassignfk1= " +StudUnID+ "", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+	}
+
+
 }
 
+
+private: System::Void upload1_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	openFileDialog1->Title = "Choose File";
+	openFileDialog1->ShowDialog();
+	Filepath = openFileDialog1->FileName;
+	Filename = openFileDialog1->SafeFileName;
+	int IDD = 0;
+	DateTime dt = System::DateTime
+	try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+		MySqlCommand^ cmd = gcnew MySqlCommand("insert into submission values(" + IDD + ",'" + pracnm + "','" + Type + "', '" + filepath + "','" + lecturersdbname + "','" + progID + "')", con);
+	}
+}
 };
+
+
+
 }

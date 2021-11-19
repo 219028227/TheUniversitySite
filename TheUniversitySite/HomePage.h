@@ -179,6 +179,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	String^ Dbpass;
 	String^ dbrole;
 	int progrmnum;
+	int Unid;
 	try {
 		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
@@ -190,6 +191,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 			Dbpass = Dr3->GetString("password");
 			dbrole = Dr3->GetString("role");
 			progrmnum = Dr3->GetInt32("programfk");
+			Unid = Dr3->GetInt32("iduser");
 		}
 		con->Close();		
 
@@ -199,7 +201,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 				 wrong = false;
 				if (dbrole == "student") {
 					this->Hide();
-					StudentPortal^ stdprtal = gcnew StudentPortal(this,Dbname,progrmnum);
+					StudentPortal^ stdprtal = gcnew StudentPortal(this,Dbname,progrmnum,Unid);
 					stdprtal->Show();
 				}
 				else if (dbrole == "admin") {
