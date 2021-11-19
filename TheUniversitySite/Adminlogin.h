@@ -168,14 +168,55 @@ namespace TheUniversitySite {
 		}
 #pragma endregion
 	private: System::Void login_Click(System::Object^ sender, System::EventArgs^ e) {
+		try {
+			bool wrong;
+			String^ EntererdUsername = admin->Text;
+			String^ EnteredPassword = password->Text;
+			String^ Dbname;
+			String^ Dbpass;
+			String^ dbrole;
 
-		this->Hide();
-		Admin^ adhomepg = gcnew Admin(this);
-		adhomepg->Show();
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where name='" + EntererdUsername + "'", con);
+			con->Open();
+			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
+			while (Dr3->Read()) {
+				Dbname = Dr3->GetString("name");
+				Dbpass = Dr3->GetString("password");
+				dbrole = Dr3->GetString("role");
+			}
+			con->Close();
+			if (EntererdUsername == Dbname) {
+				if (EnteredPassword == Dbpass) {
+					wrong = false;
+					if (dbrole == "admin") {
+						this->Hide();
+						Admin^ adhomepg = gcnew Admin(this);
+						adhomepg->Show();
+					}
+					else {
+						MessageBox::Show("You are not an Admin");
+						this->Hide();
+						mainbck->Show();
+					}
+				}
+			}
+			if (wrong == true) { MessageBox::Show("Username or Password is incorrect"); }
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
 	}
-private: System::Void backmain_Click(System::Object^ sender, System::EventArgs^ e) {
+
+
+		
+	private: System::Void backmain_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Hide();
 	mainbck->Show();
 }
 };
 }
+
+
