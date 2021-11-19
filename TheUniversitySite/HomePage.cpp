@@ -11,6 +11,3 @@ void  main(array<String^>^ args) {
 	TheUniversitySite::HomePage wp;
 	Application::Run(% wp);
 }
-
-
-

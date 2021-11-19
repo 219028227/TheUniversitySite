@@ -26,8 +26,7 @@ namespace TheUniversitySite {
 		Form^ bck;
 		String^ studdbname;
 		int progID;
-		String^ Filepath;
-		String^ Filename;
+		
 	private: System::Windows::Forms::CheckBox^ pracslec1;
 	private: System::Windows::Forms::CheckBox^ projslec;
 	private: System::Windows::Forms::CheckBox^ pracslec2;
@@ -234,6 +233,7 @@ namespace TheUniversitySite {
 			this->projslec->TabIndex = 29;
 			this->projslec->Text = L"SELECT";
 			this->projslec->UseVisualStyleBackColor = true;
+			this->projslec->CheckedChanged += gcnew System::EventHandler(this, &StudentPortal::projslec_CheckedChanged);
 			// 
 			// pracslec2
 			// 
@@ -244,6 +244,7 @@ namespace TheUniversitySite {
 			this->pracslec2->TabIndex = 28;
 			this->pracslec2->Text = L"SELECT";
 			this->pracslec2->UseVisualStyleBackColor = true;
+			this->pracslec2->CheckedChanged += gcnew System::EventHandler(this, &StudentPortal::pracslec2_CheckedChanged);
 			// 
 			// pracslec1
 			// 
@@ -353,6 +354,7 @@ namespace TheUniversitySite {
 			// 
 			this->practicalupload2->Location = System::Drawing::Point(33, 336);
 			this->practicalupload2->Name = L"practicalupload2";
+			this->practicalupload2->ReadOnly = true;
 			this->practicalupload2->Size = System::Drawing::Size(244, 20);
 			this->practicalupload2->TabIndex = 17;
 			// 
@@ -364,6 +366,7 @@ namespace TheUniversitySite {
 			this->upload2->TabIndex = 16;
 			this->upload2->Text = L"UPLOAD";
 			this->upload2->UseVisualStyleBackColor = true;
+			this->upload2->Click += gcnew System::EventHandler(this, &StudentPortal::upload2_Click);
 			// 
 			// choosepractical2
 			// 
@@ -393,6 +396,7 @@ namespace TheUniversitySite {
 			// 
 			this->practicalupload1->Location = System::Drawing::Point(33, 183);
 			this->practicalupload1->Name = L"practicalupload1";
+			this->practicalupload1->ReadOnly = true;
 			this->practicalupload1->Size = System::Drawing::Size(244, 20);
 			this->practicalupload1->TabIndex = 11;
 			// 
@@ -434,6 +438,7 @@ namespace TheUniversitySite {
 			// 
 			this->projectupload->Location = System::Drawing::Point(33, 496);
 			this->projectupload->Name = L"projectupload";
+			this->projectupload->ReadOnly = true;
 			this->projectupload->Size = System::Drawing::Size(244, 20);
 			this->projectupload->TabIndex = 5;
 			// 
@@ -445,6 +450,7 @@ namespace TheUniversitySite {
 			this->upload3->TabIndex = 4;
 			this->upload3->Text = L"UPLOAD";
 			this->upload3->UseVisualStyleBackColor = true;
+			this->upload3->Click += gcnew System::EventHandler(this, &StudentPortal::upload3_Click);
 			// 
 			// chooseproject
 			// 
@@ -502,7 +508,7 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 
 private: System::Void pracslec1_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
 	  
-	int selectedprac;
+	
 	if (pracslec1->Checked==true) {
 		choosepractical->Enabled = false;
 
@@ -558,17 +564,207 @@ private: System::Void pracslec1_CheckedChanged(System::Object^ sender, System::E
 
 private: System::Void upload1_Click(System::Object^ sender, System::EventArgs^ e) {
 
+	String^ Filepath;
+	String^ Filename;
 	openFileDialog1->Title = "Choose File";
 	openFileDialog1->ShowDialog();
 	Filepath = openFileDialog1->FileName;
 	Filename = openFileDialog1->SafeFileName;
-	int IDD = 0;
-	DateTime dt = System::DateTime
-	try {
-		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
-		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-		MySqlCommand^ cmd = gcnew MySqlCommand("insert into submission values(" + IDD + ",'" + pracnm + "','" + Type + "', '" + filepath + "','" + lecturersdbname + "','" + progID + "')", con);
+	if (Filepath != "") {
+		String^ deltrow = choosepractical->Text;
+		String^ deltrow2 = deltrow->Substring(0, 2);
+		int Deltrow = Int32::Parse(deltrow2);
+		int IDD = 0;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+			MySqlCommand^ cmd = gcnew MySqlCommand("insert into submission values(" + IDD + ",'" + Filepath + "','" + StudUnID + "', '" + Deltrow + "')", con);
+			con->Open();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			con->Close();
+			practicalupload1->Text = Filename;
+			MessageBox::Show("File Uploaded Successfully");
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
 	}
+}
+
+
+private: System::Void pracslec2_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+
+	
+	if (pracslec2->Checked == true) {
+		choosepractical2->Enabled = false;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = choosepractical2->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("insert into userassignments values(" + IDUA + " ," + StudUnID + "," + Deltrow + " )", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+
+	}
+	else {
+		choosepractical2->Enabled = true;
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = choosepractical2->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from userassignments where assignuserfk1= " + Deltrow + " and userassignfk1= " + StudUnID + "", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+	}
+
+}
+
+
+private: System::Void upload2_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	String^ Filepath;
+	String^ Filename;
+	openFileDialog1->Title = "Choose File";
+	openFileDialog1->ShowDialog();
+	Filepath = openFileDialog1->FileName;
+	Filename = openFileDialog1->SafeFileName;
+	if (Filepath != "") {
+		String^ deltrow = choosepractical2->Text;
+		String^ deltrow2 = deltrow->Substring(0, 2);
+		int Deltrow = Int32::Parse(deltrow2);
+		int IDD = 0;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+			MySqlCommand^ cmd = gcnew MySqlCommand("insert into submission values(" + IDD + ",'" + Filepath + "','" + StudUnID + "', '" + Deltrow + "')", con);
+			con->Open();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			con->Close();
+			practicalupload2->Text = Filename;
+			MessageBox::Show("File Uploaded Successfully");
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+	}
+}
+
+
+private: System::Void projslec_CheckedChanged(System::Object^ sender, System::EventArgs^ e) {
+
+	if (projslec->Checked == true) {
+		chooseproject->Enabled = false;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = chooseproject->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("insert into userassignments values(" + IDUA + " ," + StudUnID + "," + Deltrow + " )", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+
+	}
+	else {
+		chooseproject->Enabled = true;
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+			String^ deltrow = chooseproject->Text;
+			String^ deltrow2 = deltrow->Substring(0, 2);
+			int Deltrow = Int32::Parse(deltrow2);
+			int IDUA = 0;
+
+			MySqlCommand^ cmd2 = gcnew MySqlCommand("delete from userassignments where assignuserfk1= " + Deltrow + " and userassignfk1= " + StudUnID + "", con);
+
+			con->Open();
+			MySqlDataReader^ Dr = cmd2->ExecuteReader();
+			con->Close();
+
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+	}
+
+}
+
+
+private: System::Void upload3_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	String^ Filepath;
+	String^ Filename;
+	openFileDialog1->Title = "Choose File";
+	openFileDialog1->ShowDialog();
+	Filepath = openFileDialog1->FileName;
+	Filename = openFileDialog1->SafeFileName;
+	if (Filepath != "") {
+		String^ deltrow = chooseproject->Text;
+		String^ deltrow2 = deltrow->Substring(0, 2);
+		int Deltrow = Int32::Parse(deltrow2);
+		int IDD = 0;
+
+		try {
+			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+			MySqlCommand^ cmd = gcnew MySqlCommand("insert into submission values(" + IDD + ",'" + Filepath + "','" + StudUnID + "', '" + Deltrow + "')", con);
+			con->Open();
+			MySqlDataReader^ Dr = cmd->ExecuteReader();
+			con->Close();
+			projectupload->Text = Filename;
+			MessageBox::Show("File Uploaded Successfully");
+		}
+		catch (Exception^ Ex)
+		{
+			MessageBox::Show(Ex->Message);
+		}
+	}
+
 }
 };
 
