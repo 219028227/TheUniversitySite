@@ -477,6 +477,7 @@ namespace TheUniversitySite {
 			this->Controls->Add(this->panel2);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Lecturer";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Lecturer";
 			this->Load += gcnew System::EventHandler(this, &Lecturer::Lecturer_Load);
 			this->panel2->ResumeLayout(false);

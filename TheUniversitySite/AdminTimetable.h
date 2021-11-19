@@ -62,8 +62,8 @@ namespace TheUniversitySite {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(AdminTimetable::typeid));
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->backhomead = (gcnew System::Windows::Forms::Button());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->panel2->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -78,15 +78,6 @@ namespace TheUniversitySite {
 			this->panel2->Size = System::Drawing::Size(629, 610);
 			this->panel2->TabIndex = 3;
 			// 
-			// pictureBox1
-			// 
-			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
-			this->pictureBox1->Location = System::Drawing::Point(33, 108);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(574, 428);
-			this->pictureBox1->TabIndex = 0;
-			this->pictureBox1->TabStop = false;
-			// 
 			// backhomead
 			// 
 			this->backhomead->Location = System::Drawing::Point(569, 556);
@@ -97,6 +88,15 @@ namespace TheUniversitySite {
 			this->backhomead->UseVisualStyleBackColor = true;
 			this->backhomead->Click += gcnew System::EventHandler(this, &AdminTimetable::backhomead_Click);
 			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.BackgroundImage")));
+			this->pictureBox1->Location = System::Drawing::Point(33, 108);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(574, 428);
+			this->pictureBox1->TabIndex = 0;
+			this->pictureBox1->TabStop = false;
+			// 
 			// AdminTimetable
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -105,6 +105,7 @@ namespace TheUniversitySite {
 			this->Controls->Add(this->panel2);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"AdminTimetable";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"AdminTimetable";
 			this->Load += gcnew System::EventHandler(this, &AdminTimetable::AdminTimetable_Load);
 			this->panel2->ResumeLayout(false);

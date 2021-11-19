@@ -227,7 +227,6 @@ namespace TheUniversitySite {
 			this->programme->Size = System::Drawing::Size(194, 21);
 			this->programme->TabIndex = 31;
 			this->programme->Text = L"Select Programme";
-			
 			// 
 			// backbutton
 			// 
@@ -350,6 +349,7 @@ namespace TheUniversitySite {
 			this->Controls->Add(this->panel2);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"Adminstudents";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Adminstudents";
 			this->Load += gcnew System::EventHandler(this, &Adminstudents::Adminstudents_Load);
 			this->panel2->ResumeLayout(false);

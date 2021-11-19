@@ -155,6 +155,7 @@ namespace TheUniversitySite {
 			this->Controls->Add(this->panel1);
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->Name = L"HomePage";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"HomePage";
 			this->Load += gcnew System::EventHandler(this, &HomePage::HomePage_Load);
 			this->panel1->ResumeLayout(false);
@@ -175,6 +176,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	bool wrong;
 	String^ EntererdUsername = textBox1->Text;
 	String^ EnteredPassword = password->Text;
+	String^ Dbnumber;
 	String^ Dbname;
 	String^ Dbpass;
 	String^ dbrole;
@@ -183,11 +185,12 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	try {
 		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-		MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where name='" + EntererdUsername + "'", con);
+		MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where number='" + EntererdUsername + "'", con);
 		con->Open();
 		MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
 		while (Dr3->Read()) {
 			Dbname = Dr3->GetString("name");
+			Dbnumber = Dr3->GetString("number");
 			Dbpass = Dr3->GetString("password");
 			dbrole = Dr3->GetString("role");
 			progrmnum = Dr3->GetInt32("programfk");
@@ -195,7 +198,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		}
 		con->Close();		
 
-		if (EntererdUsername == Dbname) {
+		if (EntererdUsername == Dbnumber) {
 
 			if (EnteredPassword == Dbpass) {
 				 wrong = false;

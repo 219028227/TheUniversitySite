@@ -172,22 +172,24 @@ namespace TheUniversitySite {
 			bool wrong;
 			String^ EntererdUsername = admin->Text;
 			String^ EnteredPassword = password->Text;
+			String^ Dbnumber;
 			String^ Dbname;
 			String^ Dbpass;
 			String^ dbrole;
 
 			String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
 			MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
-			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where name='" + EntererdUsername + "'", con);
+			MySqlCommand^ cmd3 = gcnew MySqlCommand("Select * from user where number='" + EntererdUsername + "'", con);
 			con->Open();
 			MySqlDataReader^ Dr3 = cmd3->ExecuteReader();
 			while (Dr3->Read()) {
+				Dbnumber = Dr3->GetString("number");
 				Dbname = Dr3->GetString("name");
 				Dbpass = Dr3->GetString("password");
 				dbrole = Dr3->GetString("role");
 			}
 			con->Close();
-			if (EntererdUsername == Dbname) {
+			if (EntererdUsername == Dbnumber) {
 				if (EnteredPassword == Dbpass) {
 					wrong = false;
 					if (dbrole == "admin") {
