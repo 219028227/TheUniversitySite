@@ -24,6 +24,8 @@ namespace TheUniversitySite {
 			//
 		}
 		String^ lecturersdbname;
+	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	public:
 		Form^ homebck;
 		Lecturer(Form^ homebck1,String^lecname,int progrmfk)
 		{
@@ -170,6 +172,7 @@ namespace TheUniversitySite {
 			this->studentsscripts = (gcnew System::Windows::Forms::ListBox());
 			this->projectslist = (gcnew System::Windows::Forms::ListBox());
 			this->practicalslist = (gcnew System::Windows::Forms::ListBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -289,7 +292,7 @@ namespace TheUniversitySite {
 			this->addpractical->Name = L"addpractical";
 			this->addpractical->Size = System::Drawing::Size(171, 23);
 			this->addpractical->TabIndex = 24;
-			this->addpractical->Text = L"ADD PRACTICAL";
+			this->addpractical->Text = L"CHOOSE PRACTICAL";
 			this->addpractical->UseVisualStyleBackColor = true;
 			this->addpractical->Click += gcnew System::EventHandler(this, &Lecturer::addpractical_Click);
 			// 
@@ -344,6 +347,7 @@ namespace TheUniversitySite {
 			this->submitpractical->TabIndex = 12;
 			this->submitpractical->Text = L"SUBMIT";
 			this->submitpractical->UseVisualStyleBackColor = true;
+			this->submitpractical->Click += gcnew System::EventHandler(this, &Lecturer::submitpractical_Click);
 			// 
 			// label3
 			// 
@@ -421,6 +425,11 @@ namespace TheUniversitySite {
 			this->practicalslist->Size = System::Drawing::Size(358, 147);
 			this->practicalslist->TabIndex = 0;
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			this->openFileDialog1->InitialDirectory = L"C:\\";
+			// 
 			// Lecturer
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -447,6 +456,44 @@ private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs
 }
 private: System::Void addpractical_Click(System::Object^ sender, System::EventArgs^ e) {
 
+	openFileDialog1->Title = "Open File"
+	openFileDialog1->ShowDialog();
+
+
+}
+private: System::Void submitpractical_Click(System::Object^ sender, System::EventArgs^ e) {
+
+	/*try {
+		String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+		MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+
+		String^ pracnm = practicalname->Text;
+		DateTime practicdt = pracdate->Value;
+		String^ Type = "practical";
+
+		MySqlCommand^ cmd = gcnew MySqlCommand("select * from programme", con);
+
+
+		con->Open();
+		MySqlDataReader^ Dr = cmd2->ExecuteReader();
+		con->Close();
+
+		con->Open();
+		Programmes->Items->Clear();
+		MySqlDataReader^ Dr2 = cmd->ExecuteReader();
+		while (Dr2->Read()) {
+
+			String^ Programmeslist = Dr2->GetString("programName");
+			String^ ID = Dr2->GetInt32("idProgramme").ToString();
+			Programmes->Items->Add(ID + "    " + Programmeslist);
+
+		}
+		con->Close();
+	}
+	catch (Exception^ Ex)
+	{
+		MessageBox::Show(Ex->Message);
+	}*/
 }
 };
 }
