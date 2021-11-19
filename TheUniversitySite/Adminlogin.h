@@ -202,7 +202,7 @@ namespace TheUniversitySite {
 					}
 				}
 			}
-			if (wrong == true) { MessageBox::Show("Username or Password is incorrect"); }
+			if (wrong!=false) { MessageBox::Show("Username or Password is incorrect"); }
 		}
 		catch (Exception^ Ex)
 		{

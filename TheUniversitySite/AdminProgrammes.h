@@ -273,7 +273,7 @@ private: System::Void addprogrammes_Click(System::Object^ sender, System::EventA
 
 		
 
-		int Id;
+		int Id=0;
 		String^ Programme = programmename->Text;
 		MySqlCommand^ cmd = gcnew MySqlCommand("Insert into programme values(" + Id + ",'" + Programme + "')", con);
 		MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme", con);
