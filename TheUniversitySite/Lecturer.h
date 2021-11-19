@@ -8,6 +8,7 @@ namespace TheUniversitySite {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace MySql::Data::MySqlClient;
 
 	/// <summary>
 	/// Summary for Lecturer
@@ -22,14 +23,35 @@ namespace TheUniversitySite {
 			//TODO: Add the constructor code here
 			//
 		}
+		String^ lecturersdbname;
 		Form^ homebck;
-		Lecturer(Form^ homebck1)
+		Lecturer(Form^ homebck1,String^lecname,int progrmfk)
 		{
+					
 			homebck = homebck1;
+			lecturersdbname = lecname;
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
+			
+			try {
+				String^ dbconstr = "Server=127.0.0.1; Uid=root; Pwd=Govgovgov01; Database=allocationsystem";
+				MySqlConnection^ con = gcnew MySqlConnection(dbconstr);
+															
+				
+				MySqlCommand^ cmd2 = gcnew MySqlCommand("select * from programme where idProgramme = " + progrmfk + "", con);
+				con->Open();
+				MySqlDataReader^ Dr = cmd2->ExecuteReader();		
+				while (Dr->Read()) {
+					programmename->Text = Dr->GetString("programName");				
+					lecturersname->Text = lecturersdbname;
+
+				}
+				con->Close();
+			}
+			catch (Exception^ Ex)
+			{
+				MessageBox::Show(Ex->Message);
+			}
+
 		}
 	protected:
 		/// <summary>
@@ -198,6 +220,7 @@ namespace TheUniversitySite {
 			this->programmename->Location = System::Drawing::Point(419, 43);
 			this->programmename->Multiline = true;
 			this->programmename->Name = L"programmename";
+			this->programmename->ReadOnly = true;
 			this->programmename->Size = System::Drawing::Size(171, 26);
 			this->programmename->TabIndex = 32;
 			// 
@@ -268,6 +291,7 @@ namespace TheUniversitySite {
 			this->addpractical->TabIndex = 24;
 			this->addpractical->Text = L"ADD PRACTICAL";
 			this->addpractical->UseVisualStyleBackColor = true;
+			this->addpractical->Click += gcnew System::EventHandler(this, &Lecturer::addpractical_Click);
 			// 
 			// pracdate
 			// 
@@ -362,6 +386,7 @@ namespace TheUniversitySite {
 			this->lecturersname->Location = System::Drawing::Point(418, 11);
 			this->lecturersname->Multiline = true;
 			this->lecturersname->Name = L"lecturersname";
+			this->lecturersname->ReadOnly = true;
 			this->lecturersname->Size = System::Drawing::Size(171, 26);
 			this->lecturersname->TabIndex = 5;
 			// 
@@ -419,6 +444,9 @@ namespace TheUniversitySite {
 private: System::Void backbutton_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Hide();
 	homebck->Show();
+}
+private: System::Void addpractical_Click(System::Object^ sender, System::EventArgs^ e) {
+
 }
 };
 }
